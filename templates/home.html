@@ -2,5 +2,10 @@
 {% block title %}Twitter / Home{% endblock %}
 
 {% block content %}
-
+{% for post in posts %}
+    <h4> {{ post.author }} </h4>
+    <p> {{ post.content }} </p>
+    <a href="{% url 'posts' post.id%}">{{ post.id }}</a>
+    <small> {{ post.created }} </small>
+{% endfor %}
 {% endblock content %}
