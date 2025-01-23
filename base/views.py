@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
-from .models import Post
-from .forms import SignUpForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from .models import Post, User
+from .forms import CustomUserCreationForm
 
-CustomUser = get_user_model()
+#CustomUser = get_user_model()
 
 def loginUser(request):
     if request.user.is_authenticated:
@@ -19,7 +19,7 @@ def loginUser(request):
         password = request.POST.get('password')
         
         try:
-            user = CustomUser.objects.get(email=email)
+            user = User.objects.get(email=email)
         except:
             messages.error(request, 'User not found!')
             return redirect('register')
@@ -43,11 +43,12 @@ def logoutUser(request):
 
 
 def registerUser(request):
-    form = UserCreationForm()
+    form = CustomUserCreationForm()
+    
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
             login(request, user)
