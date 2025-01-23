@@ -9,6 +9,9 @@ class User(AbstractUser):
     bio = models.TextField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     #media = models.ImageField()
+    
+    class Meta:
+        abstract = False
 
     def __str__(self):
         return self.name
