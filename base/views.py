@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from .models import Post, User
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, PostForm
 
 #CustomUser = get_user_model()
 
@@ -33,7 +33,7 @@ def loginUser(request):
             messages.error(request, 'Invalid credentials!')
             return redirect('register')
     
-    return render(request, 'login.html')
+    return render(request, 'base/login.html')
 
 
 def logoutUser(request):
@@ -57,15 +57,31 @@ def registerUser(request):
         else:
             messages.error(request, 'Registration failed!')
             
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'base/register.html', {'form': form})
     
 
 def home(request):
     posts = Post.objects.all()
     context = {'posts': posts}
-    return render(request, 'home.html', context)
+    return render(request, 'base/home.html', context)
 
 def loadPosts(request, pk):
     post = Post.objects.get(id=pk)
     context = {'post': post}
-    return render(request, 'posts.html', context)
+    return render(request, 'base/posts.html', context)
+
+def addPost(request):
+    form = PostForm()
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, 'Post added successfully!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Failed to add post!')
+            
+    context = {'form': form}
+    return render(request, 'base/add_post.html', context)
