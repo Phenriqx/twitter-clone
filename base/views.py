@@ -61,8 +61,10 @@ def registerUser(request):
     
 
 def home(request):
+    user = request.user
+    #user = User.objects.get(name=request.POST.get('name'))
     posts = Post.objects.all()
-    context = {'posts': posts}
+    context = {'posts': posts, 'user': user}
     return render(request, 'base/home.html', context)
 
 def loadPosts(request, pk):

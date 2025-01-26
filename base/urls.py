@@ -11,4 +11,3 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('add-post', views.addPost, name='add-post')
 ] 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,12 +1,50 @@
-{% extends "layout.html" %}
-{% load static %}
+{% extends "main.html" %}
 {% block title %}Twitter / Home{% endblock %}
 
 {% block content %}
-{% for post in posts %}
-    <h4> {{ post.author }} </h4>
-    <p> {{ post.content }} </p>
-    <a href="{% url 'posts' post.id%}">{{ post.id }}</a>
-    <small> {{ post.created }} </small>
-{% endfor %}
+<!-- Feed  -->
+<div class="feed">
+    <div class="feed__header">
+        <h2>Home</h2>
+    </div>
+
+    <div class="postBox">
+        <form action="" method="post">
+            <div class="postbox__input">
+                {% comment %} <img src="" alt=""> {% endcomment %}
+                <input type="text" placeholder="What's happening?">
+            </div>
+            <button class="postBox__postButton">Post</button>
+        </form>
+    </div>
+    
+    <!-- Posts -->
+    <div class="posts">
+        <div class="post__avatar">
+            {% comment %} <img src="" alt=""> {% endcomment %}
+        </div>
+        {% for post in posts %}
+        <div class="post__body">
+            <div class="post__header">
+                <div class="post__headerText">
+                    <h3>{{ post.author }}
+                        <span class="post__headerSpecial">
+                            <span class="material-symbols-outlined post__badge">verified</span> @{{ post.author }} - {{ post.created|timesince }}
+                        </span>
+                    </h3>
+                </div>
+                <div class="post__headerDescription">
+                    <p>{{ post.content }}</p>
+                </div>
+            </div>
+            <div class="post__footer">
+                <span class="material-symbols-outlined">favorite</span>
+                <span class="material-symbols-outlined">repeat</span>
+                <span class="material-symbols-outlined">chat</span>
+                <span class="material-symbols-outlined">bookmark</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
