@@ -19,17 +19,18 @@
     </div>
     
     <!-- Posts -->
-    <div class="posts">
+     {% for post in posts %}
+    <div class="post">
         <div class="post__avatar">
-            {% comment %} <img src="" alt=""> {% endcomment %}
+            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
         </div>
-        {% for post in posts %}
+
         <div class="post__body">
             <div class="post__header">
                 <div class="post__headerText">
-                    <h3>{{ post.author }}
+                    <h3>{{ post.author}}
                         <span class="post__headerSpecial">
-                            <span class="material-symbols-outlined post__badge">verified</span> @{{ post.author }} - {{ post.created|timesince }}
+                            <span class="material-symbols-outlined post__badge">verified</span>@{{ post.author }} - {{ post.created|timesince }}
                         </span>
                     </h3>
                 </div>
@@ -37,6 +38,8 @@
                     <p>{{ post.content }}</p>
                 </div>
             </div>
+
+            <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt="">
             <div class="post__footer">
                 <span class="material-symbols-outlined">favorite</span>
                 <span class="material-symbols-outlined">repeat</span>
@@ -44,7 +47,20 @@
                 <span class="material-symbols-outlined">bookmark</span>
             </div>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
 </div>
+
+<!-- Widgets -->
+<div class="widgets">
+    <div class="widgets__input">
+        <span class="material-symbols-outlined  widgets__searchIcon">search</span>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="widgets__widgetContainer">
+        <h2>What's happening</h2>
+        <blockquote class="twitter-tweet"><p lang="en" dir="ltr">At dawn from the gateway to Mars, the launch of Starship’s second flight test <a href="https://t.co/ffKnsVKwG4">pic.twitter.com/ffKnsVKwG4</a></p>&mdash; SpaceX (@SpaceX) <a href="https://twitter.com/SpaceX/status/1732824684683784516?ref_src=twsrc%5Etfw">December 7, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+ </div>
 {% endblock content %}

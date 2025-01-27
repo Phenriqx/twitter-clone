@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
-from .models import Post, User
+from .models import Post, User, Repost, Like, Comment
 from .forms import CustomUserCreationForm, PostForm
 
 #CustomUser = get_user_model()
@@ -87,3 +86,6 @@ def addPost(request):
             
     context = {'form': form}
     return render(request, 'base/add_post.html', context)
+
+def like(request):
+    pass

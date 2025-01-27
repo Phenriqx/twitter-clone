@@ -57,6 +57,7 @@ body {
 body {
     display: flex;
     height: 100vh;
+    width: 100%;
     max-width: 1300px;
     margin-left: auto;
     margin-right: auto;
@@ -65,7 +66,7 @@ body {
 
 .sidebar {
     border-right: 1px solid var(--twitter-background);
-    flex: 0.2;
+    flex: 0.1;
     min-height: 250px;
     margin-top: 20px;
     padding-left: 20px;
@@ -90,8 +91,6 @@ body {
     border-right: 1px solid var(--twitter-background);
     min-width: fit-content;
     overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 }
 
 .feed::-webkit-scrollbar {
@@ -99,21 +98,26 @@ body {
 }
 
 .feed__header {
-    text-align: center;
     position: sticky;
     top: 0;
     background-color: white;
     z-index: 100;
     border: 1px solid var(--twitter-background);
     padding: 15px 20px;
+    text-align: center;
+}
+
+.feed {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 /* Post box */
 
-/* .postbox__input img {
+.postbox__input img {
     border-radius: 50%;
     height: 40px;
-} */
+}
 
 .postbox__input {
     display: flex;
@@ -137,7 +141,6 @@ body {
 .postBox form {
     display: flex;
     flex-direction: column;
-
 }
 
 .postBox__postButton {
@@ -154,16 +157,17 @@ body {
 
 /* Post */
 
-/* .post__avatar img {
+.post__avatar img {
     border-radius: 50%;
     height: 40px;
-} */
+}
 
-.posts {
-    display: block;
+.post {
+    display: flex;
     align-items: flex-start;
     border-bottom: 1px solid var(--twitter-background);
     padding-bottom: 10px;
+    max-width: 740px;
 }
 
 .post__body img{
@@ -175,7 +179,7 @@ body {
 .post__footer {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 10px;;
 }
 
 .post__badge {
@@ -190,7 +194,7 @@ body {
     color: gray;
 }
 
-.post__headerText {
+.post__headerText h3{
     font-size: 15px;
     margin-bottom: 5px;
 }
@@ -200,6 +204,10 @@ body {
     font-size: 15px;
 }
 
+.post__headerDescription p {
+    overflow-wrap: break-word;
+}
+
 .post__body {
     flex: 1;
     padding: 10px;
@@ -207,4 +215,50 @@ body {
 
 .post__avatar {
     padding: 20px;
+}
+
+.divider {
+    border: 1px solid var(--twitter-background);
+}
+
+/* Widgets */
+
+.widgets {
+    flex: 0.3;
+}
+
+.widgets__input {
+    border: 1.2px solid var(--twitter-background);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.widgets__input:focus-within {
+    border: 1.2px solid var(--twitter-color);
+}
+
+.widgets__input input {
+    border: none;
+    outline: none;
+}
+
+.widgets__searchIcon {
+    color: gray;
+}
+
+.widgets__widgetContainer {
+    margin-top: 15px;
+    margin-left: 20px;
+    padding: 20px;
+    background-color: #f5f8fa;
+    border-radius: 20px;
+}
+
+.widgets__widgetContainer h2 {
+    font-size: 18px;
+    font-weight: 800;
 }
