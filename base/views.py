@@ -58,19 +58,21 @@ def registerUser(request):
             
     return render(request, 'base/register.html', {'form': form})
     
-
+@login_required(login_url='register')
 def home(request):
     user = request.user
-    #user = User.objects.get(name=request.POST.get('name'))
+    form = PostForm()
     posts = Post.objects.all()
-    context = {'posts': posts, 'user': user}
-    return render(request, 'base/home.html', context)
+    context = {'posts': posts, 'user': user, 'form': form}
+    return render(request, 'home.html', context)
 
+@login_required(login_url='login')
 def loadPosts(request, pk):
     post = Post.objects.get(id=pk)
     context = {'post': post}
     return render(request, 'base/posts.html', context)
 
+@login_required(login_url='login')
 def addPost(request):
     form = PostForm()
     if request.method == 'POST':

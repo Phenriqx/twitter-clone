@@ -9,12 +9,14 @@
     </div>
 
     <div class="postBox">
-        <form action="" method="post">
+        <form action="add-post" method="post">
+            {% csrf_token %}
             <div class="postbox__input">
+                {% comment %} {{ form.as_p }} {% endcomment %}
                 {% comment %} <img src="" alt=""> {% endcomment %}
-                <input type="text" placeholder="What's happening?">
+                <input type="text" placeholder="What's happening?" class="input__Text" name="content">
             </div>
-            <button class="postBox__postButton">Post</button>
+            <button class="postBox__postButton" act>Post</button>
         </form>
     </div>
     
@@ -39,12 +41,15 @@
                 </div>
             </div>
 
-            <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt="">
+            {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
             <div class="post__footer">
-                <span class="material-symbols-outlined">favorite</span>
-                <span class="material-symbols-outlined">repeat</span>
-                <span class="material-symbols-outlined">chat</span>
-                <span class="material-symbols-outlined">bookmark</span>
+                <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
+                <span class="material-symbols-outlined repostButton">repeat</span>
+                <span class="material-symbols-outlined chatButton">chat</span>
+                <span class="material-symbols-outlined bookmark">bookmark</span>
+                {% if request.user == post.author %}
+                    <span class="material-symbols-outlined">delete</span>
+                {% endif %}
             </div>
         </div>
     </div>

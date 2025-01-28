@@ -66,7 +66,8 @@ body {
 
 .sidebar {
     border-right: 1px solid var(--twitter-background);
-    flex: 0.1;
+    flex: 0.35;
+    margin-left: 20px;
     min-height: 250px;
     margin-top: 20px;
     padding-left: 20px;
@@ -87,7 +88,7 @@ body {
 /* Feed styling */
 
 .feed {
-    flex: 0.5;
+    flex: 0.3;
     border-right: 1px solid var(--twitter-background);
     min-width: fit-content;
     overflow-y: scroll;
@@ -124,7 +125,7 @@ body {
     padding: 20px;
 }
 
-.postbox__input input {
+.input__Text {
     flex: 1;
     margin-left: 20px;
     font-size: 20px;
@@ -155,6 +156,10 @@ body {
     margin-left: auto;
 }
 
+.postBox__postButton:hover {
+    cursor: pointer;
+}
+
 /* Post */
 
 .post__avatar img {
@@ -167,7 +172,7 @@ body {
     align-items: flex-start;
     border-bottom: 1px solid var(--twitter-background);
     padding-bottom: 10px;
-    max-width: 740px;
+    max-width: 640px;
 }
 
 .post__body img{
@@ -180,6 +185,12 @@ body {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;;
+}
+
+.bookmark:hover {
+    background-color: #50b6f5d3;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .post__badge {
@@ -219,6 +230,31 @@ body {
 
 .divider {
     border: 1px solid var(--twitter-background);
+}
+
+.post__footer a {
+    text-decoration: none;
+    color: black;
+}
+
+.likeButton:hover {
+    background-color: #ff38568c;
+    border-radius: 50%;
+    /* color: #ff3856; */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.repostButton:hover {
+    background-color: #42f5729a;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.chatButton:hover {
+    background-color: #50b6f5d3;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 /* Widgets */
