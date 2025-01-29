@@ -1,0 +1,44 @@
+{% extends "home.html" %}
+{% load static %}
+{% block title %}Twitter / Bookmarks{% endblock  %}
+
+{% block content %}
+<div class="feed">
+    <div class="feed__header">
+        <h2>Bookmarks</h2>
+    </div>
+    {% for bookmark in bookmarks %}
+    <div class="post">
+        <div class="post__avatar">
+            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+        </div>
+
+        <div class="post__body">
+            <div class="post__header">
+                <div class="post__headerText">
+                    <h3>{{ bookmark.post.author }}
+                        <span class="post__headerSpecial">
+                            <span class="material-symbols-outlined post__badge">verified</span>@{{ bookmark.post.author.username }} - {{ bookmark.post.created|timesince }}
+                        </span>
+                    </h3>
+                </div>
+                <div class="post__headerDescription">
+                    <p>{{ bookmark.post.content }}</p>
+                </div>
+            </div>
+
+            {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
+            <div class="post__footer">
+                <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
+                <span class="material-symbols-outlined repostButton">repeat</span>
+                <span class="material-symbols-outlined chatButton">chat</span>
+                <span class="material-symbols-outlined bookmark">bookmark</span>
+                {% if request.user == post.author %}
+                    <a href="{% url "delete-post" post.id%}"><span class="material-symbols-outlined deleteButton">delete</span></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}    
+</div>
+{% endblock %}

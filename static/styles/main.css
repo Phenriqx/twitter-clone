@@ -87,6 +87,15 @@ body {
     text-decoration: none;
 }
 
+.bookmarkLink {
+    text-decoration: none;
+    color: black;
+}
+
+.bookmarkLink:hover {
+    color: var(--twitter-color);
+}
+
 /* Feed styling */
 
 .feed {
@@ -303,4 +312,47 @@ body {
 .widgets__widgetContainer h2 {
     font-size: 18px;
     font-weight: 800;
+}
+
+/* Delete Post */
+
+.btn {
+    border-radius: 25px;
+    background-color: var(--twitter-color);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    height: 40px;
+    width: 110px;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.btn:hover {
+    background-color: #299ce4;
+ }
+
+.postContent {
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 18px;
+    line-height: 1.5;
+    overflow-wrap: break-word;
+}
+
+.form {
+    max-width: 550px;
+}
+
+.cancelButton {
+    margin-left: 15px;
+    text-decoration: none;
+    color: var(--twitter-color);
+}
+
+.cancelButton:hover {
+    text-decoration: underline;
 }

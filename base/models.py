@@ -68,3 +68,12 @@ class Comment(models.Model):
         
     def __str__(self):
         return f'{self.author.id} - {self.author}: {self.content[:50] if len(self.content) > 50 else self.content}'
+    
+    
+class Bookmark(models.Model):
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    
+    def __str__(self): 
+        return f'The user {self.user.username} bookmarked the post: {self.post.content if len(self.post.content) < 50 else self.post.content} / id: {self.post.id}'

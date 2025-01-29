@@ -36,11 +36,12 @@ img {
     justify-content: center;
 }
 
-.input {
+.input1 {
     background-color: var(--twitter-background);
     padding: 2px;
     border-radius: 12px;
     margin-bottom: 12px;
+    height: 100px;
 }
 
 input {

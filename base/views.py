@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, User, Repost, Like, Comment
+from .models import Post, User, Repost, Like, Comment, Bookmark
 from .forms import CustomUserCreationForm, PostForm
 
 #CustomUser = get_user_model()
@@ -24,13 +24,15 @@ def loginUser(request):
             return redirect('register')
         
         user = authenticate(request, email=email, password=password)
+        
         if user is not None:
             login(request, user)
             messages.success(request, 'Logged in successfully!')
             return redirect('home')
+        
         else:
             messages.error(request, 'Invalid credentials!')
-            return redirect('register')
+            return redirect('login')
     
     return render(request, 'base/login.html')
 
@@ -101,6 +103,32 @@ def deletePost(request, pk):
         return redirect('home')
     
     return render(request, 'base/delete_post.html', {'post': post})
+
+
+def loadBookmarks(request):
+    user = request.user
+    bookmarks = Bookmark.objects.filter(user=user)
+    context = {'bookmarks': bookmarks}
+    return render(request, 'base/bookmarks.html', context)
+
+
+def addBookmark(request, pk):
+    user = request.user
+    post = Post.objects.get(id=pk)
+    
+    if Bookmark.objects.filter(user=user, post=post).exists():
+        messages.error(request, 'Post already in bookmarks')
+    
+    bookmark = Bookmark()
+    bookmark.user = user
+    bookmark.post = post
+    bookmark.save()
+    messages.success(request, 'Bookmark added successfully')
+    return redirect('bookmarks')
+    
+    messages.warning(request, 'ERROR')
+    return render(request, 'home.html',)
+
 
 def like(request):
     pass

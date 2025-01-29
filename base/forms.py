@@ -16,6 +16,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             'content': forms.TextInput(attrs={
                 'placeholder': "What's happening?",
-                'class': 'input__Text'
+                'class': 'input__Text',
+                'autocomplete':'off',
                 }),
         }

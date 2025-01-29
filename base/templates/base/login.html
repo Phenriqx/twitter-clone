@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
     <link rel="stylesheet" href="{% static 'styles/register_login.css' %}">
     <link rel="shortcut icon" href="../static/images/twitter.png" type="image/x-icon">
     <title>Sign up</title>
@@ -17,20 +21,33 @@
                 {% csrf_token %}
                 <div class="input1">
                     <p>Email</p>
-                    <input type="text" name="email">
+                    <input id="username" name="email" type="email" autocomplete="off"/>
                     <hr>
                 </div>
-                <br>
-                <div class="input3">
+
+                <div class="input1">
                     <p>Password</p>
-                    <input type="password" name="password" >
+                    <input id="password" name="password" type="password" autocomplete="off"/>
                     <hr>
                 </div>
                 <br>
                 <input type="submit" value="Log in" class="btn">
             </form>
             <p class="forgot"><a href="{% url "register" %}">Don't have an account?</a></p>
+            {% if messages %}
+                <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                </div>
+	        {% endif %}
+            
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

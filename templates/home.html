@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel='stylesheet' href="{% static 'styles/main.css' %}">
-    <link rel="shortcut icon" href="static/images/twitter.png" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'images/twitter.png' %}" type="image/x-icon">
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
@@ -46,7 +46,8 @@
         </div>
 
         <div class="sidebarOption">
-            <span class="material-symbols-outlined">bookmark</span>
+            <a href="{% url "bookmarks" %}" class="material-symbols-outlined bookmarkLink">bookmark</a>
+            {% comment %} <span class="material-symbols-outlined">bookmark</span> {% endcomment %}
             <h2>Bookmarks</h2>
         </div>
 
@@ -60,6 +61,12 @@
             <h2>Settings</h2>
         </div>
 
+        {% if user.is_authenticated %}
+        <div class="sidebarOption">
+            <a href="{% url 'logout' %}" class="material-symbols-outlined home-link">logout</a>
+            <h2>Logout</h2>
+        </div>
+        {% endif %}
         <button class="sidebar__tweet">Post</button>
     </div>
   
@@ -75,7 +82,7 @@
                 <div class="postbox__input">
                     {% comment %} {{ form.as_p }} {% endcomment %}
                     {% comment %} <img src="" alt=""> {% endcomment %}
-                    <input type="text" placeholder="What's happening?" class="input__Text" name="content">
+                    <input type="text" placeholder="What's happening?" class="input__Text" name="content" autocomplete="off">
                 </div>
                 <button class="postBox__postButton">Post</button>
             </form>
@@ -107,7 +114,7 @@
                     <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
                     <span class="material-symbols-outlined repostButton">repeat</span>
                     <span class="material-symbols-outlined chatButton">chat</span>
-                    <span class="material-symbols-outlined bookmark">bookmark</span>
+                    <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
                     {% if request.user == post.author %}
                         <a href="{% url "delete-post" post.id%}"><span class="material-symbols-outlined deleteButton">delete</span></a>
                     {% endif %}
