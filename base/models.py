@@ -33,7 +33,7 @@ class Post(models.Model):
         ordering = ['-updated', '-created']
         
     def __str__(self):
-        return f'{self.author.id} - {self.author}: {self.content[:50] if len(self.content) > 50 else self.content}'
+        return f'{self.id} - {self.author}: {self.content[:50] if len(self.content) > 50 else self.content}'
     
 
 class Repost(models.Model):

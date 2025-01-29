@@ -10,5 +10,6 @@ urlpatterns = [
     path('register/', views.registerUser, name='register'),
     path('login/', views.loginUser, name='login'),
     path('logout/', views.logoutUser, name='logout'),
-    path('add-post', views.addPost, name='add-post')
+    path('add-post', views.addPost, name='add-post'),
+    path('delete-post/<str:pk>', views.deletePost, name='delete-post')
 ] 

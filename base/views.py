@@ -89,5 +89,18 @@ def addPost(request):
     context = {'form': form}
     return render(request, 'base/add_post.html', context)
 
+def deletePost(request, pk):
+    post = Post.objects.get(id=pk)
+    
+    if request.user != post.author:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'Post deleted successfully!')
+        return redirect('home')
+    
+    return render(request, 'base/delete_post.html', {'post': post})
+
 def like(request):
     pass

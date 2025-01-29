@@ -52,6 +52,7 @@ body {
     border-radius: 30px;
     height: 50px;
     margin-top: 20px;
+    max-width: 180px;
 }
 
 body {
@@ -66,13 +67,14 @@ body {
 
 .sidebar {
     border-right: 1px solid var(--twitter-background);
-    flex: 0.35;
+    flex: 0.30;
     margin-left: 20px;
     min-height: 250px;
     margin-top: 20px;
     padding-left: 20px;
     padding-right: 20px;
     font-size: 13px;
+    max-width: 350px;
 }
 
 .fa-twitter {
@@ -88,7 +90,7 @@ body {
 /* Feed styling */
 
 .feed {
-    flex: 0.3;
+    flex: 0.4;
     border-right: 1px solid var(--twitter-background);
     min-width: fit-content;
     overflow-y: scroll;
@@ -254,6 +256,10 @@ body {
 .chatButton:hover {
     background-color: #50b6f5d3;
     border-radius: 50%;
+    cursor: pointer;
+}
+
+.deleteButton {
     cursor: pointer;
 }
 

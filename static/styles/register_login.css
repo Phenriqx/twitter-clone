@@ -36,22 +36,11 @@ img {
     justify-content: center;
 }
 
-.input1 {
+.input {
     background-color: var(--twitter-background);
     padding: 2px;
     border-radius: 12px;
-}
-
-.input2 {
-    background-color: var(--twitter-background);
-    padding: 2px;
-    border-radius: 12px;
-}
-
-.input3 {
-    background-color: var(--twitter-background);
-    padding: 2px;
-    border-radius: 12px;
+    margin-bottom: 12px;
 }
 
 input {

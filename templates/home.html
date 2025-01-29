@@ -1,71 +1,132 @@
-{% extends "main.html" %}
-{% block title %}Twitter / Home{% endblock %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-{% block content %}
-<!-- Feed  -->
-<div class="feed">
-    <div class="feed__header">
-        <h2>Home</h2>
-    </div>
+    <link rel='stylesheet' href="{% static 'styles/main.css' %}">
+    <link rel="shortcut icon" href="static/images/twitter.png" type="image/x-icon">
 
-    <div class="postBox">
-        <form action="add-post" method="post">
-            {% csrf_token %}
-            <div class="postbox__input">
-                {% comment %} {{ form.as_p }} {% endcomment %}
-                {% comment %} <img src="" alt=""> {% endcomment %}
-                <input type="text" placeholder="What's happening?" class="input__Text" name="content">
-            </div>
-            <button class="postBox__postButton" act>Post</button>
-        </form>
-    </div>
-    
-    <!-- Posts -->
-     {% for post in posts %}
-    <div class="post">
-        <div class="post__avatar">
-            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <!--Sidebar-->
+    <div class="sidebar">
+        <i class="fab fa-twitter"></i>
+        <div class="sidebarOption active">
+            <a href="{% url 'home' %}" class="material-symbols-outlined home-link">home</a>
+            {% comment %} <span class="material-symbols-outlined">home</span> {% endcomment %}
+            <h2>Home</h2>
         </div>
 
-        <div class="post__body">
-            <div class="post__header">
-                <div class="post__headerText">
-                    <h3>{{ post.author}}
-                        <span class="post__headerSpecial">
-                            <span class="material-symbols-outlined post__badge">verified</span>@{{ post.author }} - {{ post.created|timesince }}
-                        </span>
-                    </h3>
+        <div class="sidebarOption">
+            <span class="material-symbols-outlined">search</span>
+            <h2>Explore</h2>
+        </div>
+
+        <div class="sidebarOption">
+            <span class="material-symbols-outlined">notifications</span>
+            <h2>Notifications</h2>
+        </div>
+        
+        <div class="sidebarOption">
+            <span class="material-symbols-outlined">mail</span>
+            <h2>Messages</h2>
+        </div>
+
+        <div class="sidebarOption">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <h2>Lists</h2>
+        </div>
+
+        <div class="sidebarOption">
+            <span class="material-symbols-outlined">bookmark</span>
+            <h2>Bookmarks</h2>
+        </div>
+
+        <div class="sidebarOption">
+            <span class="material-symbols-outlined">person</span>
+            <h2>Profile</h2>
+        </div>
+
+        <div class="sidebarOption">
+            <span class="material-symbols-outlined">settings</span>
+            <h2>Settings</h2>
+        </div>
+
+        <button class="sidebar__tweet">Post</button>
+    </div>
+  
+  {% block content %}
+    <div class="feed">
+        <div class="feed__header">
+            <h2>Home</h2>
+        </div>
+
+        <div class="postBox">
+            <form action="add-post" method="post">
+                {% csrf_token %}
+                <div class="postbox__input">
+                    {% comment %} {{ form.as_p }} {% endcomment %}
+                    {% comment %} <img src="" alt=""> {% endcomment %}
+                    <input type="text" placeholder="What's happening?" class="input__Text" name="content">
                 </div>
-                <div class="post__headerDescription">
-                    <p>{{ post.content }}</p>
-                </div>
+                <button class="postBox__postButton">Post</button>
+            </form>
+        </div>
+        
+        <!-- Posts -->
+        {% for post in posts %}
+        <div class="post">
+            <div class="post__avatar">
+                <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
             </div>
 
-            {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
-            <div class="post__footer">
-                <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
-                <span class="material-symbols-outlined repostButton">repeat</span>
-                <span class="material-symbols-outlined chatButton">chat</span>
-                <span class="material-symbols-outlined bookmark">bookmark</span>
-                {% if request.user == post.author %}
-                    <span class="material-symbols-outlined">delete</span>
-                {% endif %}
+            <div class="post__body">
+                <div class="post__header">
+                    <div class="post__headerText">
+                        <h3>{{ post.author}}
+                            <span class="post__headerSpecial">
+                                <span class="material-symbols-outlined post__badge">verified</span>@{{ post.author.username }} - {{ post.created|timesince }}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="post__headerDescription">
+                        <p>{{ post.content }}</p>
+                    </div>
+                </div>
+
+                {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
+                <div class="post__footer">
+                    <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
+                    <span class="material-symbols-outlined repostButton">repeat</span>
+                    <span class="material-symbols-outlined chatButton">chat</span>
+                    <span class="material-symbols-outlined bookmark">bookmark</span>
+                    {% if request.user == post.author %}
+                        <a href="{% url "delete-post" post.id%}"><span class="material-symbols-outlined deleteButton">delete</span></a>
+                    {% endif %}
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
+  {% endblock %}
 
-<!-- Widgets -->
-<div class="widgets">
-    <div class="widgets__input">
-        <span class="material-symbols-outlined  widgets__searchIcon">search</span>
-        <input type="text" placeholder="Search...">
-    </div>
+    <div class="widgets">
+        <div class="widgets__input">
+            <span class="material-symbols-outlined  widgets__searchIcon">search</span>
+            <input type="text" placeholder="Search...">
+        </div>
 
-    <div class="widgets__widgetContainer">
-        <h2>What's happening</h2>
-        <blockquote class="twitter-tweet"><p lang="en" dir="ltr">At dawn from the gateway to Mars, the launch of Starship’s second flight test <a href="https://t.co/ffKnsVKwG4">pic.twitter.com/ffKnsVKwG4</a></p>&mdash; SpaceX (@SpaceX) <a href="https://twitter.com/SpaceX/status/1732824684683784516?ref_src=twsrc%5Etfw">December 7, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <div class="widgets__widgetContainer">
+            <h2>What's happening</h2>
+            <blockquote class="twitter-tweet"><p lang="en" dir="ltr">At dawn from the gateway to Mars, the launch of Starship’s second flight test <a href="https://t.co/ffKnsVKwG4">pic.twitter.com/ffKnsVKwG4</a></p>&mdash; SpaceX (@SpaceX) <a href="https://twitter.com/SpaceX/status/1732824684683784516?ref_src=twsrc%5Etfw">December 7, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
     </div>
- </div>
-{% endblock content %}
+</body>
