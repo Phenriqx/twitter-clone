@@ -113,8 +113,9 @@
                 <div class="post__footer">
                     <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
                     <a href=""><span class="material-symbols-outlined repostButton">repeat</span></a>
-                    <a href=""><span class="material-symbols-outlined chatButton">chat</span></a>
+                    <a href="{% url "add-comment" post.author post.id%}"><span class="material-symbols-outlined chatButton">chat</span></a>
                     <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
+
                     {% if request.user == post.author %}
                         <a href="{% url "delete-post" post.id%}"><span class="material-symbols-outlined deleteButton">delete</span></a>
                         <a href="{% url "update-post" post.id%}"><span class="material-symbols-outlined deleteButton">update</span></a>

@@ -18,4 +18,6 @@ urlpatterns = [
     path('bookmarks/', views.loadBookmarks, name='bookmarks'),
     path('add-bookmark/<str:pk>', views.addBookmark, name='add-bookmark'),
     path('delete-bookmark/<str:pk>', views.deleteBookmark, name='delete-bookmark'),
+    
+    path('<str:author>/post/<str:pk>', views.addComment, name='add-comment')
 ] 

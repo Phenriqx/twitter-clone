@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from .models import Post, User, Repost, Like, Comment, Bookmark
-from .forms import CustomUserCreationForm, PostForm
+from .forms import CustomUserCreationForm, PostForm, CommentForm
 
 
 def loginUser(request):
@@ -163,6 +163,33 @@ def deleteBookmark(request, pk):
     messages.success(request, 'Bookmark deleted successfully')
     
     return redirect('bookmarks')
+
+
+def addComment(request, author, pk):
+    user = request.user
+    post = Post.objects.get(id=pk)
+    author = post.author.name
+    comments = Comment.objects.all()
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = user
+            comment.post = post
+            comment.content = request.POST.get('content')
+            comment.save()
+            messages.success(request, 'Comment added successfully')
+            return redirect('home')
+        else:
+            messages.error(request, 'Failed to add comment')
+    
+    context = {'user': user, 
+               'author': author,
+               'post': post,
+               'comments': comments,
+    }
+    return render(request, 'base/add_comment.html', context)
 
 
 def like(request):

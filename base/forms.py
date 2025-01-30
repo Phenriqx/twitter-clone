@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, User
+from .models import Post, User, Comment
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -18,5 +18,18 @@ class PostForm(forms.ModelForm):
                 'placeholder': "What's happening?",
                 'class': 'input__Text',
                 'autocomplete':'off',
-                }),
+                })
+        }
+        
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ['author', 'post']
+        widgets = {
+            'content': forms.TextInput(attrs={
+                'placeholder': "Ppst your reply",
+                'class': 'input__Text',
+                'autocomplete':'off',
+                })
         }
