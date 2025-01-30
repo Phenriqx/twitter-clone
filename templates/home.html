@@ -112,11 +112,12 @@
                 {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
                 <div class="post__footer">
                     <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
-                    <span class="material-symbols-outlined repostButton">repeat</span>
-                    <span class="material-symbols-outlined chatButton">chat</span>
+                    <a href=""><span class="material-symbols-outlined repostButton">repeat</span></a>
+                    <a href=""><span class="material-symbols-outlined chatButton">chat</span></a>
                     <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
                     {% if request.user == post.author %}
                         <a href="{% url "delete-post" post.id%}"><span class="material-symbols-outlined deleteButton">delete</span></a>
+                        <a href="{% url "update-post" post.id%}"><span class="material-symbols-outlined deleteButton">update</span></a>
                     {% endif %}
                 </div>
             </div>

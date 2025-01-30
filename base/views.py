@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -7,7 +7,6 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Post, User, Repost, Like, Comment, Bookmark
 from .forms import CustomUserCreationForm, PostForm
 
-#CustomUser = get_user_model()
 
 def loginUser(request):
     if request.user.is_authenticated:
@@ -60,6 +59,7 @@ def registerUser(request):
             
     return render(request, 'base/register.html', {'form': form})
     
+    
 @login_required(login_url='register')
 def home(request):
     user = request.user
@@ -68,11 +68,13 @@ def home(request):
     context = {'posts': posts, 'user': user, 'form': form}
     return render(request, 'home.html', context)
 
+
 @login_required(login_url='login')
 def loadPosts(request, pk):
     post = Post.objects.get(id=pk)
     context = {'post': post}
     return render(request, 'base/posts.html', context)
+
 
 @login_required(login_url='login')
 def addPost(request):
@@ -91,6 +93,8 @@ def addPost(request):
     context = {'form': form}
     return render(request, 'base/add_post.html', context)
 
+
+@login_required(login_url='login')
 def deletePost(request, pk):
     post = Post.objects.get(id=pk)
     
@@ -105,6 +109,25 @@ def deletePost(request, pk):
     return render(request, 'base/delete_post.html', {'post': post})
 
 
+@login_required(login_url='login')
+def updatePost(request, pk):
+    post = Post.objects.get(id=pk)
+    form = PostForm(instance=post)
+    
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Post updated successfully!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Failed to update post!')
+            
+    context = {'form': form, 'post': post}
+    return render(request, 'base/update_post.html', context)
+
+
+@login_required(login_url='login')
 def loadBookmarks(request):
     user = request.user
     bookmarks = Bookmark.objects.filter(user=user)
@@ -112,22 +135,34 @@ def loadBookmarks(request):
     return render(request, 'base/bookmarks.html', context)
 
 
+@login_required(login_url='login')
 def addBookmark(request, pk):
     user = request.user
     post = Post.objects.get(id=pk)
     
     if Bookmark.objects.filter(user=user, post=post).exists():
-        messages.error(request, 'Post already in bookmarks')
+        return HttpResponse('Post already exists in the bookmarks')
     
     bookmark = Bookmark()
     bookmark.user = user
     bookmark.post = post
     bookmark.save()
     messages.success(request, 'Bookmark added successfully')
-    return redirect('bookmarks')
+    return redirect('home')
+
+
+@login_required(login_url='login')
+def deleteBookmark(request, pk):
+    user = request.user
+    post = Post.objects.get(id=pk)
     
-    messages.warning(request, 'ERROR')
-    return render(request, 'home.html',)
+    if not Bookmark.objects.filter(user=user, post=post).exists():
+        return redirect('home')
+    
+    Bookmark.objects.filter(user=user, post=post).delete()
+    messages.success(request, 'Bookmark deleted successfully')
+    
+    return redirect('bookmarks')
 
 
 def like(request):
