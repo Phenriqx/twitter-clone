@@ -74,7 +74,7 @@ class Comment(models.Model):
         ordering = ['-created']
         
     def __str__(self):
-        return f'{self.author.id} - {self.author}: {self.content[:50] if len(self.content) > 50 else self.content}'
+        return f'{self.author.id} - {self.author}: {self.content[:50] if len(self.content) > 50 else self.content}; id: {self.id}'
     
     
 class Bookmark(models.Model):

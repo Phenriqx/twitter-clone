@@ -19,5 +19,7 @@ urlpatterns = [
     path('add-bookmark/<str:pk>', views.addBookmark, name='add-bookmark'),
     path('delete-bookmark/<str:pk>', views.deleteBookmark, name='delete-bookmark'),
     
-    path('<str:author>/post/<str:pk>', views.addComment, name='add-comment')
+    path('<str:author>/post/<str:pk>', views.addComment, name='add-comment'),
+    path('<str:author>/delete-comment/<str:pk>', views.deleteComment, name='delete-comment'),
+    path('<str:author>/update-comment/<str:pk>', views.updateComment, name='update-comment'),
 ] 

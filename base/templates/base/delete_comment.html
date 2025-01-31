@@ -1,0 +1,19 @@
+{% extends "home.html" %}
+{% block title %}Delete Comment{% endblock %}
+
+{% block content %}
+<div class="feed">
+    <div class="feed__header">
+        <h2>Are you sure you want to delete this?</h2>
+    </div>    
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        <div class="input">
+            <p class="postContent"><em>Comment to be deleted:</em> {{ comment.content }} <strong>by {{ author }}</strong></p>
+            <input type="hidden" name="post_id" value="{{ post.id }}">
+            <button type="submit" class="btn">Delete</button>
+            <a href="{% url 'home' %}" class="cancelButton">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

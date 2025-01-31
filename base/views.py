@@ -35,12 +35,10 @@ def loginUser(request):
     
     return render(request, 'base/login.html')
 
-
 def logoutUser(request):
     logout(request)
     messages.success(request, 'Logged out successfully!')
     return redirect('home')
-
 
 def registerUser(request):
     form = CustomUserCreationForm()
@@ -59,7 +57,6 @@ def registerUser(request):
             
     return render(request, 'base/register.html', {'form': form})
     
-    
 @login_required(login_url='register')
 def home(request):
     user = request.user
@@ -68,13 +65,11 @@ def home(request):
     context = {'posts': posts, 'user': user, 'form': form}
     return render(request, 'home.html', context)
 
-
 @login_required(login_url='login')
 def loadPosts(request, pk):
     post = Post.objects.get(id=pk)
     context = {'post': post}
     return render(request, 'base/posts.html', context)
-
 
 @login_required(login_url='login')
 def addPost(request):
@@ -93,7 +88,6 @@ def addPost(request):
     context = {'form': form}
     return render(request, 'base/add_post.html', context)
 
-
 @login_required(login_url='login')
 def deletePost(request, pk):
     post = Post.objects.get(id=pk)
@@ -107,7 +101,6 @@ def deletePost(request, pk):
         return redirect('home')
     
     return render(request, 'base/delete_post.html', {'post': post})
-
 
 @login_required(login_url='login')
 def updatePost(request, pk):
@@ -126,14 +119,12 @@ def updatePost(request, pk):
     context = {'form': form, 'post': post}
     return render(request, 'base/update_post.html', context)
 
-
 @login_required(login_url='login')
 def loadBookmarks(request):
     user = request.user
     bookmarks = Bookmark.objects.filter(user=user)
     context = {'bookmarks': bookmarks}
     return render(request, 'base/bookmarks.html', context)
-
 
 @login_required(login_url='login')
 def addBookmark(request, pk):
@@ -150,7 +141,6 @@ def addBookmark(request, pk):
     messages.success(request, 'Bookmark added successfully')
     return redirect('home')
 
-
 @login_required(login_url='login')
 def deleteBookmark(request, pk):
     user = request.user
@@ -163,7 +153,6 @@ def deleteBookmark(request, pk):
     messages.success(request, 'Bookmark deleted successfully')
     
     return redirect('bookmarks')
-
 
 def addComment(request, author, pk):
     user = request.user
@@ -191,6 +180,37 @@ def addComment(request, author, pk):
     }
     return render(request, 'base/add_comment.html', context)
 
+def deleteComment(request, author, pk):
+    user = request.user
+    comment = Comment.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        Comment.objects.filter(author=user, id=comment.id).delete()
+        messages.success(request, 'Comment deleted successfully')
+        return redirect('home')
+    
+    context = {
+        'user': user,
+        'author': author,
+        'comment': comment,
+    }
+    return render(request, 'base/delete_comment.html', context)
+
+def updateComment(request, author, pk):
+    comment = Comment.objects.get(id=pk)
+    form = CommentForm(instance=comment)
+    
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Comment updated successfully!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Failed to update post!')
+            
+    context = {'form': form, 'post': comment}
+    return render(request, 'base/update_comment.html', context)
 
 def like(request):
     pass
