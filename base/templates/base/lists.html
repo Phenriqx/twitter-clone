@@ -1,0 +1,10 @@
+{% extends "home.html" %}
+{% block title %}Lists / Twitter{% endblock %}
+
+{% block content %}
+
+    {% for user in participants %}
+        {{ user }}
+    {% endfor %}
+
+{% endblock %}

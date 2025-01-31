@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, User, Repost, Like, Comment, Bookmark
+from .models import Post, User, Repost, Like, Comment, Bookmark, List
 from .forms import CustomUserCreationForm, PostForm, CommentForm
 
 
@@ -211,6 +211,18 @@ def updateComment(request, author, pk):
             
     context = {'form': form, 'post': comment}
     return render(request, 'base/update_comment.html', context)
+
+def loadLists(request, author):
+    lists = List.objects.get(id=1)
+    participants = lists.participants.all()
+    for user in participants:
+        print(user.email)
+        
+    context = { 'lists': lists,
+               'participans' : participants
+    }
+
+    return render(request, 'base/lists.html', context)
 
 def like(request):
     pass

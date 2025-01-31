@@ -22,4 +22,6 @@ urlpatterns = [
     path('<str:author>/post/<str:pk>', views.addComment, name='add-comment'),
     path('<str:author>/delete-comment/<str:pk>', views.deleteComment, name='delete-comment'),
     path('<str:author>/update-comment/<str:pk>', views.updateComment, name='update-comment'),
+    
+    path('<str:author>/lists/', views.loadLists, name='load-lists'),
 ] 
