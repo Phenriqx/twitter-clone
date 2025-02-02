@@ -390,3 +390,34 @@ body {
     resize: none;
     background-color: var(--twitter-background);
 }
+
+.lists {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--twitter-background);
+}
+
+.lists h1 {
+    padding-bottom: 7px;
+    font-size: 23px;
+}
+
+.lists h2 {
+    padding-bottom: 5px;
+    font-size: 19px;
+}
+
+.lists p {
+    padding-bottom: 5px;
+    font-size: 15px;
+}
+
+.list_link {
+    text-decoration: none;
+    color: black;
+}
+
+.userLists__h2 {
+    margin-left: 20px;
+}

@@ -1,0 +1,23 @@
+{% extends "home.html" %}
+{% block title %}List by {{ list.author }}{% endblock %}
+
+{% block content %}
+<div class="feed">
+    <h1> {{ list.topic }} </h1>
+    {% for user in participants %}
+        <p> {{ user.username }} </p>
+    {% endfor %}
+
+    <div class="room__message">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <input name="content" placeholder="Write your message here..." autocomplete="off"/>
+        </form>
+    </div>
+
+    {% for message in list_messages %}
+        <h3>{{ message.author.username }}</h3>
+        <p> {{ message.content }} </p>
+    {% endfor %}
+</div>
+{% endblock %}

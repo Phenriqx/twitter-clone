@@ -5,8 +5,40 @@
 
 <div class="feed">
     <div class="feed__header">
-        <h2>Lists</h2>
-    </div>    
+        <h2>Discover new Lists</h2>
+        <a href="{% url 'create-list' %}" class="cancelButton">Create a new list</a>
+    </div>
+
+    {% for list in lists  %}
+        {% if list.author != user %}
+            <a href="{% url 'get-list' list.id%}" class="list_link">
+                <div class="lists">
+                    <h1> {{ list.topic }} </h1>
+                    <h2> {{ list.name }} </h2>
+                    <p> {{ list.description }} </p>
+                    {% if user == list.author %}
+                        <a href="{% url 'delete-list' list.id%}" class="cancelButton">Delete List</a>
+                    {% endif %}
+                </div>
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    <h2 class="userLists__h2">Your Lists</h2>
+    {% for list in lists %}
+        {% if user == list.author %}
+            <a href="{% url 'get-list' list.id %}" class="list_link">
+                <div class="lists">
+                    <h1> {{ list.topic }} </h1>
+                    <h2> {{ list.name }} </h2>
+                    <p> {{ list.description }} </p>
+                    {% if user == list.author %}
+                        <a href="{% url 'delete-list' list.id %}" class="cancelButton">Delete List</a>
+                    {% endif %}
+                </div>
+            </a>
+        {% endif %}
+    {% endfor %}
 </div>
 
 {% endblock %}

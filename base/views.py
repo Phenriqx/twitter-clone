@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, User, Repost, Like, Comment, Bookmark, List, Topic
+from .models import Post, User, Repost, Like, Comment, Bookmark, List, Topic, Message
 from .forms import CustomUserCreationForm, PostForm, CommentForm, ListForm
 
 
@@ -213,17 +213,37 @@ def updateComment(request, author, pk):
     return render(request, 'base/update_comment.html', context)
 
 def loadLists(request, author):
-    lists = List.objects.get(id=1)
-    participants = lists.participants.all()
-    users = [user for user in participants]
-        
-    print(users)
+    lists = List.objects.all()[:3]
+    user = request.user
 
     context = { 'lists': lists,
-               'users': users,
+                'user': user,
     }
 
     return render(request, 'base/lists.html', context)
+
+def getList(request, pk):
+    list = List.objects.get(id=pk)
+    list_messages = list.message_set.all()
+    participants = [user for user in list.participants.all()]
+    
+    if request.method == 'POST':
+        message = Message.objects.create(
+            author = request.user,
+            list = list,
+            content = request.POST.get('content'),
+        )
+        messages.success(request, 'message added successfully')
+        list.participants.add(request.user)
+        return redirect('get-list', list.id)
+    
+    context = {
+        'list': list,
+        'participants': participants,
+        'list_messages': list_messages,
+    }
+    
+    return render(request, 'base/list.html', context)
 
 def createList(request):
     form = ListForm()    
@@ -232,6 +252,7 @@ def createList(request):
     if request.method == 'POST':
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(topic=topic_name)
+        messages.success(request, f'The topic {topic} has been created')
         
         List.objects.create(
             author = request.user,
@@ -246,6 +267,21 @@ def createList(request):
                'topics': topics
     }
     return render(request, 'base/add_list.html', context)
+
+def deleteList(request, pk):
+    user = request.user
+    list = List.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        List.objects.filter(author=user, id=list.id).delete()
+        messages.success(request, 'List deleted successfully')
+        return redirect('load-lists', author=request.user)
+    
+    context = {
+        'user': user,
+        'list': list,
+    }
+    return render(request, 'base/delete_list.html', context)
 
 def like(request):
     pass

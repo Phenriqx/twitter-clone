@@ -108,3 +108,17 @@ class List(models.Model):
     
     def __str__(self):
         return f'The list {self.name} created by {self.author.username} with topic {self.topic}; id: {self.id}; participants: {self.participants}'
+    
+    
+class Message(models.Model):
+    
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
+    content = models.CharField(max_length=250)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created']
+        
+    def __str__(self):
+        return f'message: {self.content if len(self.content) < 50 else self.content[:50]}; author: {self.author}; message_id {self.id}; list {self.list.name}'

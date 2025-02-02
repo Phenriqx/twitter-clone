@@ -25,4 +25,6 @@ urlpatterns = [
     
     path('<str:author>/lists/', views.loadLists, name='load-lists'),
     path('lists/create', views.createList, name='create-list'),
+    path('lists/get/<str:pk>', views.getList, name='get-list'),
+    path('lists/delete/<str:pk>', views.deleteList, name='delete-list'),
 ] 
