@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, User, Repost, Like, Comment, Bookmark, List
-from .forms import CustomUserCreationForm, PostForm, CommentForm
+from .models import Post, User, Repost, Like, Comment, Bookmark, List, Topic
+from .forms import CustomUserCreationForm, PostForm, CommentForm, ListForm
 
 
 def loginUser(request):
@@ -215,14 +215,37 @@ def updateComment(request, author, pk):
 def loadLists(request, author):
     lists = List.objects.get(id=1)
     participants = lists.participants.all()
-    for user in participants:
-        print(user.email)
+    users = [user for user in participants]
         
+    print(users)
+
     context = { 'lists': lists,
-               'participans' : participants
+               'users': users,
     }
 
     return render(request, 'base/lists.html', context)
+
+def createList(request):
+    form = ListForm()    
+    topics = Topic.objects.all()
+    
+    if request.method == 'POST':
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(topic=topic_name)
+        
+        List.objects.create(
+            author = request.user,
+            topic = topic,
+            name = request.POST.get('name'),
+            description = request.POST.get('description'),
+        )
+        messages.success(request, 'List created successfully')
+        return redirect('home')
+    
+    context = {'form': form, 
+               'topics': topics
+    }
+    return render(request, 'base/add_list.html', context)
 
 def like(request):
     pass

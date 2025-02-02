@@ -1,0 +1,39 @@
+{% extends "home.html" %}
+{% block title %}Create List{% endblock %}
+
+{% block content %}
+
+<div class="feed">
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        <div class="input">
+            <div class="listField">
+                <input required type="text" value="{{room.topic.name}}" name="topic" class="input__Text list__Input" list="topic-list"
+                placeholder="Enter a topic:"/>
+                <datalist id="topic-list">
+                    <select id="room_topic">
+                        {% for topic in topics %}
+                            <option value="{{topic.name}}">{{ topic.name }}</option>
+                        {% endfor %}
+                    </select>
+                </datalist>
+            </div>
+            <hr>
+        </div>
+        <div class="input">
+            <div class="listField">
+                <input type="text" placeholder="List Name" class="input__Text list__Input" name="name" autocomplete="off">
+                
+            </div>
+            <hr>
+        </div>
+        <div class="input">
+            <div class="listField">
+                <input type="text" placeholder="List Description" class="input__Text input__Textarea" name="description" autocomplete="off">
+            </div>
+            <hr>
+        </div>
+        <button type="submit" class="btn">Create List</button>
+    </form>
+</div>
+{% endblock %}

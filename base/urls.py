@@ -24,4 +24,5 @@ urlpatterns = [
     path('<str:author>/update-comment/<str:pk>', views.updateComment, name='update-comment'),
     
     path('<str:author>/lists/', views.loadLists, name='load-lists'),
+    path('lists/create', views.createList, name='create-list'),
 ] 

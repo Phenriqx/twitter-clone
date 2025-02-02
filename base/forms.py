@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, User, Comment
+from .models import Post, User, Comment, List
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -28,8 +28,32 @@ class CommentForm(forms.ModelForm):
         exclude = ['author', 'post']
         widgets = {
             'content': forms.TextInput(attrs={
-                'placeholder': "Ppst your reply",
+                'placeholder': "Post your reply",
                 'class': 'input__Text',
                 'autocomplete':'off',
                 })
+        }
+        
+
+class ListForm(forms.ModelForm):
+    
+    class Meta:
+        model = List
+        exclude = ['author', 'participants']
+        widgets = {
+            'topic': forms.TextInput(attrs={
+                'placeholder': "Topic",
+                'class': 'input__Text list__Input',
+                'autocomplete':'off',
+                }),
+            'name': forms.TextInput(attrs={
+                'placeholder': "List name",
+                'class': 'input__Text list__Input',
+                'autocomplete':'off',
+                }),
+            'description': forms.Textarea(attrs={
+                'placeholder': "List description",
+                'class': 'input__Text input__Textarea',
+                'autocomplete':'off',
+                }),
         }

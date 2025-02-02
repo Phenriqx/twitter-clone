@@ -373,3 +373,20 @@ body {
 .input {
     border-bottom: 1px solid var(--twitter-background);
 }
+
+.listField {
+    background-color: var(--twitter-background);
+    height: 140px;
+}
+
+.list__Input {
+    margin-top: 14px;
+    background-color: var(--twitter-background);
+}
+
+.input__Textarea {
+    height: 140px;
+    max-height: 140px;
+    resize: none;
+    background-color: var(--twitter-background);
+}
