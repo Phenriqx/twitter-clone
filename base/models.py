@@ -53,6 +53,7 @@ class Like(models.Model):
     
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    liked = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     
     class Meta:

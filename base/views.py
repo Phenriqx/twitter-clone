@@ -59,6 +59,7 @@ def registerUser(request):
     
 @login_required(login_url='register')
 def home(request):
+    #like_count = Like.objects.filter(post=post).count()
     user = request.user
     form = PostForm()
     posts = Post.objects.all()
@@ -66,10 +67,21 @@ def home(request):
     return render(request, 'home.html', context)
 
 @login_required(login_url='login')
-def loadPosts(request, pk):
+def getPost(request, author, pk):
+    user = request.user
     post = Post.objects.get(id=pk)
-    context = {'post': post}
-    return render(request, 'base/posts.html', context)
+    like = Like.objects.filter(post=post, author=user)
+    like_count = Like.objects.filter(post=post).count()
+    comments = Comment.objects.filter(post=post)
+
+    context = {
+        'post': post,
+        'like_count': like_count,
+        'like': like,
+        'user': user,
+        'comments': comments
+    }
+    return render(request, 'base/post.html', context)
 
 @login_required(login_url='login')
 def addPost(request):
@@ -169,7 +181,7 @@ def addComment(request, author, pk):
             comment.content = request.POST.get('content')
             comment.save()
             messages.success(request, 'Comment added successfully')
-            return redirect('home')
+            return redirect('add-comment', author=author, pk=pk)
         else:
             messages.error(request, 'Failed to add comment')
     
@@ -253,7 +265,7 @@ def createList(request):
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(topic=topic_name)
         messages.success(request, f'The topic {topic} has been created')
-        
+
         List.objects.create(
             author = request.user,
             topic = topic,
@@ -283,5 +295,35 @@ def deleteList(request, pk):
     }
     return render(request, 'base/delete_list.html', context)
 
-def like(request):
-    pass
+def getLikeAmount(post):
+    return Like.objects.filter(post=post).count()
+
+def likePost(request, pk):
+    user = request.user
+    post = Post.objects.get(id=pk)
+    
+    if Like.objects.filter(author=user, post=post).exists():
+        messages.error(request, 'You already liked this post')
+        return redirect('home')
+    
+    like = Like()
+    like.author = user
+    like.post = post
+    like.liked = True
+    like.save()
+    messages.success(request, f'the user {user.username} liked the post {post.content}')
+    return redirect('home')
+
+def unlikePost(request, pk):
+    user = request.user
+    post = Post.objects.get(id=pk)
+    like_count = getLikeAmount(post)
+    
+    if not Like.objects.filter(author=user, post=post).exists():
+        messages.error(request, 'You haven\'t liked this post yet')
+        return redirect('home')
+    
+    Like.objects.filter(author=user, post=post).delete()
+    messages.success(request, f'the user {user.username} unliked the post {post.content}')
+    return redirect('home')
+    #return render(request, 'home.html', {'like_count': like_count})

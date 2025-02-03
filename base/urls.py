@@ -10,7 +10,7 @@ urlpatterns = [
     path('login/', views.loginUser, name='login'),
     path('logout/', views.logoutUser, name='logout'),
     
-    path('posts/<str:pk>', views.loadPosts, name='posts'),
+    path('post/<str:author>/<str:pk>', views.getPost, name='get-post'),
     path('add-post', views.addPost, name='add-post'),
     path('delete-post/<str:pk>', views.deletePost, name='delete-post'),
     path('update-post/<str:pk>', views.updatePost, name='update-post'),
@@ -27,4 +27,7 @@ urlpatterns = [
     path('lists/create', views.createList, name='create-list'),
     path('lists/get/<str:pk>', views.getList, name='get-list'),
     path('lists/delete/<str:pk>', views.deleteList, name='delete-list'),
+    
+    path('like-post/<str:pk>', views.likePost, name='like-post'),
+    path('unlike-post/<str:pk>', views.unlikePost, name='unlike-post')
 ] 

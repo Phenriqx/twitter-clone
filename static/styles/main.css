@@ -272,6 +272,10 @@ body {
     cursor: pointer;
 }
 
+/* .updateButton {
+    margin-right: 60px;
+} */
+
 /* Widgets */
 
 .widgets {
@@ -420,4 +424,9 @@ body {
 
 .userLists__h2 {
     margin-left: 20px;
+}
+
+.postLink {
+    color: black;
+    text-decoration: none;
 }
