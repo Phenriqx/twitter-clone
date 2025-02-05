@@ -29,5 +29,7 @@ urlpatterns = [
     path('lists/delete/<str:pk>', views.deleteList, name='delete-list'),
     
     path('like-post/<str:pk>', views.likePost, name='like-post'),
-    path('unlike-post/<str:pk>', views.unlikePost, name='unlike-post')
+    path('repost/<str:pk>', views.repost, name='repost'),
+    
+    path('profile/<str:pk>', views.profile, name='profile')
 ] 

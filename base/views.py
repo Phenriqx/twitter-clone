@@ -59,7 +59,6 @@ def registerUser(request):
     
 @login_required(login_url='register')
 def home(request):
-    #like_count = Like.objects.filter(post=post).count()
     user = request.user
     form = PostForm()
     posts = Post.objects.all()
@@ -72,6 +71,7 @@ def getPost(request, author, pk):
     post = Post.objects.get(id=pk)
     like = Like.objects.filter(post=post, author=user)
     like_count = Like.objects.filter(post=post).count()
+    repost_count = Repost.objects.filter(post=post).count()
     comments = Comment.objects.filter(post=post)
 
     context = {
@@ -79,7 +79,8 @@ def getPost(request, author, pk):
         'like_count': like_count,
         'like': like,
         'user': user,
-        'comments': comments
+        'comments': comments,
+        'repost_count': repost_count
     }
     return render(request, 'base/post.html', context)
 
@@ -166,6 +167,7 @@ def deleteBookmark(request, pk):
     
     return redirect('bookmarks')
 
+@login_required(login_url='login')
 def addComment(request, author, pk):
     user = request.user
     post = Post.objects.get(id=pk)
@@ -192,6 +194,7 @@ def addComment(request, author, pk):
     }
     return render(request, 'base/add_comment.html', context)
 
+@login_required(login_url='login')
 def deleteComment(request, author, pk):
     user = request.user
     comment = Comment.objects.get(id=pk)
@@ -208,6 +211,7 @@ def deleteComment(request, author, pk):
     }
     return render(request, 'base/delete_comment.html', context)
 
+@login_required(login_url='login')
 def updateComment(request, author, pk):
     comment = Comment.objects.get(id=pk)
     form = CommentForm(instance=comment)
@@ -224,6 +228,7 @@ def updateComment(request, author, pk):
     context = {'form': form, 'post': comment}
     return render(request, 'base/update_comment.html', context)
 
+@login_required(login_url='login')
 def loadLists(request, author):
     lists = List.objects.all()[:3]
     user = request.user
@@ -234,6 +239,7 @@ def loadLists(request, author):
 
     return render(request, 'base/lists.html', context)
 
+@login_required(login_url='login')
 def getList(request, pk):
     list = List.objects.get(id=pk)
     list_messages = list.message_set.all()
@@ -257,6 +263,7 @@ def getList(request, pk):
     
     return render(request, 'base/list.html', context)
 
+@login_required(login_url='login')
 def createList(request):
     form = ListForm()    
     topics = Topic.objects.all()
@@ -280,6 +287,7 @@ def createList(request):
     }
     return render(request, 'base/add_list.html', context)
 
+@login_required(login_url='login')
 def deleteList(request, pk):
     user = request.user
     list = List.objects.get(id=pk)
@@ -298,6 +306,7 @@ def deleteList(request, pk):
 def getLikeAmount(post):
     return Like.objects.filter(post=post).count()
 
+@login_required(login_url='login')
 def likePost(request, pk):
     user = request.user
     post = Post.objects.get(id=pk)
@@ -314,16 +323,36 @@ def likePost(request, pk):
     messages.success(request, f'the user {user.username} liked the post {post.content}')
     return redirect('home')
 
-def unlikePost(request, pk):
+@login_required(login_url='login')
+def repost(request, pk):
     user = request.user
     post = Post.objects.get(id=pk)
-    like_count = getLikeAmount(post)
     
-    if not Like.objects.filter(author=user, post=post).exists():
-        messages.error(request, 'You haven\'t liked this post yet')
+    if Repost.objects.filter(author=user, post=post).exists():
+        messages.error(request, 'You already reposted this post')
         return redirect('home')
     
-    Like.objects.filter(author=user, post=post).delete()
-    messages.success(request, f'the user {user.username} unliked the post {post.content}')
+    repost = Repost()
+    repost.author = user
+    repost.post = post
+    repost.save()
+    messages.success(request, f'the user {user.username} reposted the post {post.content}')
     return redirect('home')
-    #return render(request, 'home.html', {'like_count': like_count})
+
+@login_required(login_url='login')
+def profile(request, pk):
+    user = request.user
+    profile_user = User.objects.get(id=pk)
+    posts = Post.objects.filter(author=profile_user)
+    likes = Like.objects.filter(author=profile_user)
+    reposts = Repost.objects.filter(author=profile_user)
+    
+    context = {
+        'user': user,
+        'profile_user': profile_user,
+        'posts': posts,
+        'likes': likes,
+        'reposts': reposts
+    }
+    
+    return render(request, 'base/profile.html', context)

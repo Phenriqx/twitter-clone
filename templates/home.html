@@ -21,7 +21,6 @@
         <i class="fab fa-twitter"></i>
         <div class="sidebarOption active">
             <a href="{% url 'home' %}" class="material-symbols-outlined home-link">home</a>
-            {% comment %} <span class="material-symbols-outlined">home</span> {% endcomment %}
             <h2>Home</h2>
         </div>
 
@@ -47,12 +46,11 @@
 
         <div class="sidebarOption">
             <a href="{% url "bookmarks" %}" class="material-symbols-outlined bookmarkLink">bookmark</a>
-            {% comment %} <span class="material-symbols-outlined">bookmark</span> {% endcomment %}
             <h2>Bookmarks</h2>
         </div>
 
         <div class="sidebarOption">
-            <span class="material-symbols-outlined">person</span>
+            <a href="{% url "profile" user %}"><span class="material-symbols-outlined">person</span></a>
             <h2>Profile</h2>
         </div>
 
@@ -111,7 +109,7 @@
                     {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
                     <div class="post__footer">
                         <a href="{% url "like-post" post.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a>
-                        <a href=""><span class="material-symbols-outlined repostButton">repeat</span></a>
+                        <a href="{% url "repost" post.id %}"><span class="material-symbols-outlined repostButton">repeat</span></a>
                         <a href="{% url "add-comment" post.author post.id%}"><span class="material-symbols-outlined chatButton">chat</span></a>
                         <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
                         {% if request.user == post.author %}

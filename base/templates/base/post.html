@@ -28,13 +28,8 @@
             </div>
             {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
             <div class="post__footer">
-                {% if like.liked == True %}
-                    <a href="{% url "unlike-post" post.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a>
-                {% else %}
-                    <a href="{% url "like-post" post.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a>
-                {% endif %}
-                {% comment %} <a href="{% url "like-post" post.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a> {% endcomment %}
-                <a href=""><span class="material-symbols-outlined repostButton">repeat</span></a>
+                <a href="{% url "like-post" post.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a>
+                <a href="{% url "repost" post.id %}"><span class="material-symbols-outlined repostButton">repeat</span> {{ repost_count }} </a>
                 <a href="{% url "add-comment" post.author post.id%}"><span class="material-symbols-outlined chatButton">chat</span></a>
                 <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
                 {% if request.user == post.author %}
