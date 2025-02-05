@@ -59,10 +59,12 @@ def registerUser(request):
     
 @login_required(login_url='register')
 def home(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    
     user = request.user
     form = PostForm()
     posts = Post.objects.all()
-    context = {'posts': posts, 'user': user, 'form': form}
+    context = {'posts': posts, 'user': user, 'form': form,}
     return render(request, 'home.html', context)
 
 @login_required(login_url='login')
@@ -340,9 +342,10 @@ def repost(request, pk):
     return redirect('home')
 
 @login_required(login_url='login')
-def profile(request, pk):
-    user = request.user
-    profile_user = User.objects.get(id=pk)
+def profile(request, user):
+    userr = request.user.email
+    print(userr)
+    profile_user = User.objects.get(email=userr)
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
