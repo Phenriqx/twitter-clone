@@ -30,6 +30,7 @@ urlpatterns = [
     
     path('like-post/<str:pk>', views.likePost, name='like-post'),
     path('repost/<str:pk>', views.repost, name='repost'),
+    path('search/', views.search, name='search'),
     
     path('profile/<str:user>', views.profile, name='profile')
 ] 

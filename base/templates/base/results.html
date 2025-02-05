@@ -1,0 +1,9 @@
+{% extends "home.html" %}
+
+{% block title %}Search Result{% endblock %}
+
+{% block content %}
+    {% for result in results %}
+        <p> {{ result }} </p>
+    {% endfor %}
+{% endblock %}

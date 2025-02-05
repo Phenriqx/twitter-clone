@@ -61,11 +61,35 @@ def registerUser(request):
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     
+    results = Post.objects.filter(
+            Q(author__username__icontains=q) |
+            Q(content__icontains=q) |
+            Q(author__name__icontains=q) |
+            Q(author__email__icontains=q)
+    )
+    
     user = request.user
     form = PostForm()
     posts = Post.objects.all()
-    context = {'posts': posts, 'user': user, 'form': form,}
+    context = {'posts': posts, 
+               'user': user,
+               'form': form,
+               'results': results}
+    
     return render(request, 'home.html', context)
+
+def search(request):
+    q = request.GET.get('q')
+    
+    results = Post.objects.filter(
+            Q(author__username__icontains=q) |
+            Q(content__icontains=q) |
+            Q(author__name__icontains=q) |
+            Q(author__email__icontains=q)
+    )
+
+    context =  {'results': results}
+    return render(request, 'base/results.html', context)
 
 @login_required(login_url='login')
 def getPost(request, author, pk):
