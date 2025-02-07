@@ -32,5 +32,6 @@ urlpatterns = [
     path('repost/<str:pk>', views.repost, name='repost'),
     path('search/', views.search, name='search'),
     
-    path('profile/<str:user>', views.profile, name='profile')
+    path('profile/<str:user>', views.profile, name='profile'),
+    path('profile/<str:pk>', views.linkProfile, name='link-profile')
 ] 

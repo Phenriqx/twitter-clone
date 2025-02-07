@@ -59,14 +59,6 @@ def registerUser(request):
     
 @login_required(login_url='register')
 def home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    
-    results = Post.objects.filter(
-            Q(author__username__icontains=q) |
-            Q(content__icontains=q) |
-            Q(author__name__icontains=q) |
-            Q(author__email__icontains=q)
-    )
     
     user = request.user
     form = PostForm()
@@ -74,7 +66,7 @@ def home(request):
     context = {'posts': posts, 
                'user': user,
                'form': form,
-               'results': results}
+    }
     
     return render(request, 'home.html', context)
 
@@ -367,6 +359,7 @@ def repost(request, pk):
 
 @login_required(login_url='login')
 def profile(request, user):
+    
     userr = request.user.email
     print(userr)
     profile_user = User.objects.get(email=userr)
@@ -383,3 +376,19 @@ def profile(request, user):
     }
     
     return render(request, 'base/profile.html', context)
+
+def linkProfile(request, pk):
+    
+    profile_user = User.objects.get(id=pk)
+    posts = Post.objects.filter(author=profile_user)
+    likes = Like.objects.filter(author=profile_user)
+    reposts = Repost.objects.filter(author=profile_user)
+    
+    context = {
+        'profile_user': profile_user,
+        'posts': posts,
+        'likes': likes,
+        'reposts': reposts
+    }
+    
+    return render(request, 'base/link_profile.html', context)
