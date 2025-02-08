@@ -4,12 +4,65 @@
 {% block content %}
 
     <div class="feed">
-        <h1>{{ profile_user.name }}</h1>
-        <small> {{ profile_user.username }} </small>
-        <p> {{ posts.count }} posts</p>
-        <p> Joined: {{ profile_user.date_joined|date:"F d, Y" }}</p>
+        <!DOCTYPE html>
+        <div class="profile-container">
+            <div class="cover"></div>
+            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="" class='profile-pic'>
+            <div class="profile-info">
+                <h2> {{ profile_user.name }} </h2>
+                <p>@{{ profile_user.username }} </p>
+                <p>{{ profile_user.bio }}</p>
+            </div>
+            <div class="buttons">
+                <button>Follow</button>
+                <a href=""><button>Edit Profile</button></a>
+            </div>
+            <div class="tabs">
+                <a href="">Posts</a>
+                <a href="{% url "load-replies" profile_user.username %}">Replies</a>
+                <a href="#">Likes</a>
+            </div>
+        </div>
 
-        <hr>
+        {% if page == 'replies' %}
+                    
+            {% for comment in comments %}
+                <a href="{% url 'get-post' comment.author comment.id %}" class="postLink">
+                    <div class="post">
+                        <div class="post__avatar">
+                            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                        </div>
+                        <div class="post__body">
+                            <div class="post__header">
+                                <div class="post__headerText">
+                                    <h3>{{ comment.author}}
+                                        <span class="post__headerSpecial">
+                                            <span class="material-symbols-outlined post__badge">verified</span>@{{ comment.author.username }} - {{ comment.created|timesince }}
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="post__headerDescription">
+                                    <p>{{ comment.content }}</p>
+                                </div>
+                            </div>
+                            {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
+                            <div class="post__footer">
+                                <a href="{% url "like-post" comment.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a>
+                                <a href="{% url "repost" comment.id %}"><span class="material-symbols-outlined repostButton">repeat</span></a>
+                                <a href="{% url "add-comment" comment.author comment.id%}"><span class="material-symbols-outlined chatButton">chat</span></a>
+                                <a href="{% url "add-bookmark" comment.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
+                                {% if request.user == comment.author %}
+                                    <a href="{% url "delete-post" comment.id %}"><span class="material-symbols-outlined deleteButton">delete</span></a>
+                                    <a href="{% url "update-post" comment.id%}"><span class="material-symbols-outlined updateButton">update</span></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+                
+        {% endif %}
+
         {% for post in posts %}
         <a href="{% url 'get-post' post.author post.id %}" class="postLink">
             <div class="post">

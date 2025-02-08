@@ -361,7 +361,6 @@ def repost(request, pk):
 def profile(request, user):
     
     userr = request.user.email
-    print(userr)
     profile_user = User.objects.get(email=userr)
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
@@ -377,9 +376,9 @@ def profile(request, user):
     
     return render(request, 'base/profile.html', context)
 
-def linkProfile(request, pk):
+def linkProfile(request, username):
     
-    profile_user = User.objects.get(id=pk)
+    profile_user = User.objects.get(username=username)
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
@@ -391,4 +390,16 @@ def linkProfile(request, pk):
         'reposts': reposts
     }
     
-    return render(request, 'base/link_profile.html', context)
+    return render(request, 'base/profile.html', context)
+
+def loadReplies(request, username):
+    page = 'replies'
+    author = User.objects.get(username=username)
+    comments = Comment.objects.filter(author=author)
+    print(comments)   
+    context = {
+        'comments' : comments,
+        'page': page,
+        'author': author
+    }
+    return render(request, 'base/profile.html', context)

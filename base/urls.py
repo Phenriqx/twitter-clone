@@ -33,5 +33,6 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     
     path('profile/<str:user>', views.profile, name='profile'),
-    path('profile/<str:pk>', views.linkProfile, name='link-profile')
+    path('link/profile/<str:username>', views.linkProfile, name='link-profile'),
+    path('<str:username>/replies/', views.loadReplies, name='load-replies')
 ] 
