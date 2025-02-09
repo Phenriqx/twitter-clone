@@ -362,16 +362,21 @@ def profile(request, user):
     
     userr = request.user.email
     profile_user = User.objects.get(email=userr)
+    user_id = int(profile_user.id) if profile_user else None
+    print(user_id)
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
+    comments = Comment.objects.filter(author=profile_user)
     
     context = {
         'user': user,
         'profile_user': profile_user,
         'posts': posts,
         'likes': likes,
-        'reposts': reposts
+        'reposts': reposts,
+        'user_id': user_id,
+        'comments': comments
     }
     
     return render(request, 'base/profile.html', context)
@@ -379,6 +384,8 @@ def profile(request, user):
 def linkProfile(request, username):
     
     profile_user = User.objects.get(username=username)
+    user_id = int(profile_user.id) if profile_user else None
+    print(user_id)
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
@@ -387,19 +394,39 @@ def linkProfile(request, username):
         'profile_user': profile_user,
         'posts': posts,
         'likes': likes,
-        'reposts': reposts
+        'reposts': reposts,
+        'user_id': user_id
     }
     
     return render(request, 'base/profile.html', context)
 
 def loadReplies(request, username):
+    
+    if not User.objects.filter(username=username).exists():
+        return redirect('home')
+    
     page = 'replies'
-    author = User.objects.get(username=username)
-    comments = Comment.objects.filter(author=author)
-    print(comments)   
+    profile_user = User.objects.get(username=username)
+    user_id = int(profile_user.id) if profile_user else None
+    comments = Comment.objects.filter(author=profile_user)
     context = {
         'comments' : comments,
         'page': page,
-        'author': author
+        'user_id': user_id,
+        'profile_user': profile_user
+    }
+    return render(request, 'base/profile.html', context)
+
+def loadLikes(request, username):
+    
+    page = 'likes'
+    profile_user = User.objects.get(username=username)
+    user_id = int(profile_user.id) if profile_user else None
+    likes = Like.objects.filter(author=profile_user)
+    context = {
+        'likes' : likes, 
+        'page': page,
+        'user_id': user_id,
+        'profile_user': profile_user
     }
     return render(request, 'base/profile.html', context)
