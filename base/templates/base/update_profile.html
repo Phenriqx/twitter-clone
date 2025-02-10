@@ -6,14 +6,31 @@
     <div class="feed__header">
         <h2>Update Profile</h2>
     </div>    
-    <form action="" method="post" class="form">
-        {% csrf_token %}
-        <div class="input">
-            <input type="text" placeholder="Update Post..." class="input__Text updateBlock" name="content" autocomplete="off" value="{{ post.content }}">
-             {% comment %} <p class="postContent"><em>Post to be deleted:</em> {{ post.content }} <strong>by {{ post.author.username }}</strong></p> {% endcomment %}
-            <button type="submit" class="btn">Update</button>
-            <a href="{% url 'home' %}" class="cancelButton">Cancel</a>
-        </div>
-    </form>
+    <div class="update_profile_container">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="input-group">
+                    <label for="name">{{field.label}}</label>
+                    {{ field }}
+                    {% comment %} <input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="off"> {% endcomment %}
+                </div>
+            {% endfor %}
+            {% comment %} <div class="input-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" name="bio" placeholder="Tell something about yourself" autocomplete="off"></textarea>
+            </div> {% endcomment %}
+            <button type="submit" class="update_profile_button">Save Changes</button>
+        </form>
+    </div>
+
 </div>
 {% endblock %}

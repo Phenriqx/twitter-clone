@@ -15,7 +15,10 @@
             </div>
             <div class="buttons">
                 <button>Follow</button>
-                <a href="{% url 'update-profile' profile_user.username %}"><button>Edit Profile</button></a>
+                
+                {% if user == profile_user %}
+                    <a href="{% url 'update-profile' profile_user.username %}"><button>Edit Profile</button></a>
+                {% endif %}
             </div>
             <div class="tabs">
                 <a href="{% url 'link-profile' profile_user.username %}">Posts</a>

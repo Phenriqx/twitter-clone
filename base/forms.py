@@ -57,3 +57,9 @@ class ListForm(forms.ModelForm):
                 'autocomplete':'off',
                 }),
         }
+        
+class UserForm(forms.ModelForm):
+    
+    class Meta:
+        model = User
+        fields = ['name', 'username', 'bio']

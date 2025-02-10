@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from .models import Post, User, Repost, Like, Comment, Bookmark, List, Topic, Message
-from .forms import CustomUserCreationForm, PostForm, CommentForm, ListForm
+from .forms import CustomUserCreationForm, PostForm, CommentForm, ListForm, UserForm
 
 
 def loginUser(request):
@@ -363,8 +363,8 @@ def profile(request, user):
     userr = request.user.email
     profile_user = User.objects.get(email=userr)
     user_id = int(profile_user.id) if profile_user else None
-    print(user_id)
     posts = Post.objects.filter(author=profile_user)
+    user_session = request.user
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
     comments = Comment.objects.filter(author=profile_user)
@@ -376,7 +376,8 @@ def profile(request, user):
         'likes': likes,
         'reposts': reposts,
         'user_id': user_id,
-        'comments': comments
+        'comments': comments,
+        'user' : user_session
     }
     
     return render(request, 'base/profile.html', context)
@@ -385,7 +386,7 @@ def linkProfile(request, username):
     
     profile_user = User.objects.get(username=username)
     user_id = int(profile_user.id) if profile_user else None
-    print(user_id)
+    user_session = request.user
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
@@ -395,7 +396,8 @@ def linkProfile(request, username):
         'posts': posts,
         'likes': likes,
         'reposts': reposts,
-        'user_id': user_id
+        'user_id': user_id,
+        'user' : user_session
     }
     
     return render(request, 'base/profile.html', context)
@@ -406,6 +408,7 @@ def loadReplies(request, username):
         return redirect('home')
     
     page = 'replies'
+    user_session = request.user
     profile_user = User.objects.get(username=username)
     user_id = int(profile_user.id) if profile_user else None
     comments = Comment.objects.filter(author=profile_user)
@@ -413,12 +416,14 @@ def loadReplies(request, username):
         'comments' : comments,
         'page': page,
         'user_id': user_id,
-        'profile_user': profile_user
+        'profile_user': profile_user,
+        'user' : user_session
     }
     return render(request, 'base/profile.html', context)
 
 def loadLikes(request, username):
     
+    user_session = request.user
     page = 'likes'
     profile_user = User.objects.get(username=username)
     user_id = int(profile_user.id) if profile_user else None
@@ -427,14 +432,23 @@ def loadLikes(request, username):
         'likes' : likes, 
         'page': page,
         'user_id': user_id,
-        'profile_user': profile_user
+        'profile_user': profile_user,
+        'user' : user_session
     }
     return render(request, 'base/profile.html', context)
 
 def udpateProfile(request, username):
-    profile_user = User.objects.get(username=username)
+    form = UserForm(instance=request.user)
+    
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated succesfully')
+            return redirect('profile', user=request.user)
+            
     
     context = {
-        'profile_user': profile_user
+        'form': form
     }
     return render(request, 'base/update_profile.html', context)
