@@ -123,3 +123,12 @@ class Message(models.Model):
         
     def __str__(self):
         return f'message: {self.content if len(self.content) < 50 else self.content[:50]}; author: {self.author}; message_id {self.id}; list {self.list.name}'
+    
+class Follow(models.Model):
+    
+    following = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
+    follower = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'The user {self.follower.username} started following {self.following.username}'

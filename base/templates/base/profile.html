@@ -14,10 +14,11 @@
                 <p>{{ profile_user.bio }}</p>
             </div>
             <div class="buttons">
-                <button>Follow</button>
-                
                 {% if user == profile_user %}
                     <a href="{% url 'update-profile' profile_user.username %}"><button>Edit Profile</button></a>
+                {% else %}
+
+                    <a href="{% url 'follow' profile_user.id %}"><button>Follow {{ follow.count }}</button></a>
                 {% endif %}
             </div>
             <div class="tabs">
@@ -38,7 +39,7 @@
                         <div class="post__body">
                             <div class="post__header">
                                 <div class="post__headerText">
-                                    <h3>{{ comment.author}}
+                                    <h3><a href="{% url "link-profile" comment.author.username %}" class="link__Profile">{{ comment.author }}</a>
                                         <span class="post__headerSpecial">
                                             <span class="material-symbols-outlined post__badge">verified</span>@{{ comment.author.username }} - {{ comment.created|timesince }}
                                         </span>
@@ -77,7 +78,7 @@
                         <div class="post__body">
                             <div class="post__header">
                                 <div class="post__headerText">
-                                    <h3>{{ like.post.author }}
+                                    <h3><a href="{% url "link-profile" like.post.author.username %}" class="link__Profile">{{ like.post.author }}</a>
                                         <span class="post__headerSpecial">
                                             <span class="material-symbols-outlined post__badge">verified</span>@{{ like.author.username }} - {{ like.created|timesince }}
                                         </span>

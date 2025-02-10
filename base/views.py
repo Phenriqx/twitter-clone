@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, User, Repost, Like, Comment, Bookmark, List, Topic, Message
+from .models import Post, User, Repost, Like, Comment, Bookmark, List, Topic, Message, Follow
 from .forms import CustomUserCreationForm, PostForm, CommentForm, ListForm, UserForm
 
 
@@ -387,6 +387,7 @@ def linkProfile(request, username):
     profile_user = User.objects.get(username=username)
     user_id = int(profile_user.id) if profile_user else None
     user_session = request.user
+    follow = Follow.objects.get(following=profile_user.id)
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
@@ -397,7 +398,8 @@ def linkProfile(request, username):
         'likes': likes,
         'reposts': reposts,
         'user_id': user_id,
-        'user' : user_session
+        'user' : user_session,
+        'follow': follow,
     }
     
     return render(request, 'base/profile.html', context)
@@ -410,15 +412,19 @@ def loadReplies(request, username):
     page = 'replies'
     user_session = request.user
     profile_user = User.objects.get(username=username)
+    follow = Follow.objects.get(following=profile_user.id)
     user_id = int(profile_user.id) if profile_user else None
     comments = Comment.objects.filter(author=profile_user)
+    
     context = {
         'comments' : comments,
         'page': page,
         'user_id': user_id,
         'profile_user': profile_user,
-        'user' : user_session
+        'user' : user_session,
+        'follow': follow,
     }
+    
     return render(request, 'base/profile.html', context)
 
 def loadLikes(request, username):
@@ -426,15 +432,19 @@ def loadLikes(request, username):
     user_session = request.user
     page = 'likes'
     profile_user = User.objects.get(username=username)
+    follow = Follow.objects.get(following=profile_user.id)
     user_id = int(profile_user.id) if profile_user else None
     likes = Like.objects.filter(author=profile_user)
+    
     context = {
         'likes' : likes, 
         'page': page,
         'user_id': user_id,
         'profile_user': profile_user,
-        'user' : user_session
+        'user' : user_session,
+        'follow': follow,
     }
+    
     return render(request, 'base/profile.html', context)
 
 def udpateProfile(request, username):
@@ -452,3 +462,17 @@ def udpateProfile(request, username):
         'form': form
     }
     return render(request, 'base/update_profile.html', context)
+
+def followUser(request, user_id):
+    user = request.user
+    
+    if Follow.objects.filter(following=user_id, follower=user.id).exists():
+        return HttpResponse('You already follow this user!')
+    
+    following = User.objects.get(id=user_id)
+    
+    Follow.objects.create(
+        following = following,
+        follower = user
+    )
+    return redirect('link-profile', username=following.username)
