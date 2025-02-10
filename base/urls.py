@@ -34,6 +34,7 @@ urlpatterns = [
     
     path('profile/<str:user>', views.profile, name='profile'),
     path('link/profile/<str:username>', views.linkProfile, name='link-profile'),
+    path('update-user/<str:username>', views.udpateProfile, name='update-profile'),
     path('load-replies/<str:username>/', views.loadReplies, name='load-replies'),
     path('load-likes/<str:username>/', views.loadLikes, name='load-likes')
 ] 

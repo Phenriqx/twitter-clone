@@ -1,5 +1,4 @@
 {% extends "home.html" %}
-{% load static %}
 {% block title %}{{ profile_user.name }} ({{ profile_user.username }}) / Twitter{% endblock %}
 
 {% block content %}
@@ -16,7 +15,7 @@
             </div>
             <div class="buttons">
                 <button>Follow</button>
-                <a href=""><button>Edit Profile</button></a>
+                <a href="{% url 'update-profile' profile_user.username %}"><button>Edit Profile</button></a>
             </div>
             <div class="tabs">
                 <a href="{% url 'link-profile' profile_user.username %}">Posts</a>

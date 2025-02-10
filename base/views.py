@@ -430,3 +430,11 @@ def loadLikes(request, username):
         'profile_user': profile_user
     }
     return render(request, 'base/profile.html', context)
+
+def udpateProfile(request, username):
+    profile_user = User.objects.get(username=username)
+    
+    context = {
+        'profile_user': profile_user
+    }
+    return render(request, 'base/update_profile.html', context)
