@@ -426,6 +426,15 @@ body {
     margin-left: 20px;
 }
 
+.link__Profile {
+    text-decoration: none;
+    color: #000;
+}
+
+.link__Profile:hover {
+    text-decoration: underline;
+}
+
 .postLink {
     color: black;
     text-decoration: none;

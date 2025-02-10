@@ -50,7 +50,7 @@
         </div>
 
         <div class="sidebarOption">
-            <a href="{% url "profile" user %}"><span class="material-symbols-outlined">person</span></a>
+            <a href="{% url "profile" user %}"><span class="material-symbols-outlined bookmarkLink">person</span></a>
             <h2>Profile</h2>
         </div>
 
@@ -96,7 +96,7 @@
                     <div class="post__body">
                         <div class="post__header">
                             <div class="post__headerText">
-                                <h3><a href="{% url "link-profile" post.author.username %}">{{ post.author }}</a>
+                                <h3><a href="{% url "link-profile" post.author.username %}" class="link__Profile">{{ post.author }}</a>
                                     <span class="post__headerSpecial">
                                         <span class="material-symbols-outlined post__badge">verified</span>@{{ post.author.username }} - {{ post.created|timesince }}
                                     </span>
