@@ -1,0 +1,109 @@
+{% extends "home.html" %}
+{% block title %}People following {{ profile_user.username }}{% endblock %}
+
+{% block content %}
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f8fa;
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #ffffff;
+            padding: 10px 0;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        .nav-item {
+            margin: 0 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #1da1f2;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+        .nav-item:hover {
+            background-color: rgba(29, 161, 242, 0.1);
+        }
+        .followers__container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .follower {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        .follower:last-child {
+            border-bottom: none;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+
+
+    <div class="feed">
+        <div class="followers">
+            <div class="navbar">
+                <div class="nav-item">Followers</div>
+                <div class="nav-item">Following</div>
+            </div>
+            
+            <div class="followers__container">
+                {% for follower in followers %}
+                    <div class="follower">
+                        {% comment %} <img class="avatar" src="https://via.placeholder.com/40" alt="Avatar"> {% endcomment %}
+                        <span class="name"> {{ follower.follower.name }} </span>
+                        <span class="name"> {{ follower.follower.username }} </span>
+                        <p>{{ follower.follower.bio }} </p>
+                    </div>
+                {% endfor %}
+                
+                {% comment %} <div class="follower">
+                    <img class="avatar" src="https://via.placeholder.com/40" alt="Avatar">
+                    <span class="name">Jane Smith</span>
+                </div>
+                <div class="follower">
+                    <img class="avatar" src="https://via.placeholder.com/40" alt="Avatar">
+                    <span class="name">Mike Johnson</span>
+                </div> {% endcomment %}
+            </div>
+
+            {% comment %} <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="" class='profile-pic'> {% endcomment %}
+            {% comment %} <div class="follower-info">
+                <h3>{{ follower.follower.username }}</h3>
+                <p>@{{ follower.follower.name }}</p>
+                <p>{{ follower.follower.bio }}</p>
+            </div> {% endcomment %}
+        </div>
+    </div>
+    {% comment %} <script>
+        document.querySelectorAll('.nav-item')[0].addEventListener('click', () => {
+            window.location.href = '/followers';
+        });
+        document.querySelectorAll('.nav-item')[1].addEventListener('click', () => {
+            window.location.href = '/following';
+        });
+    </script> {% endcomment %}
+
+{% endblock %}
+
+    

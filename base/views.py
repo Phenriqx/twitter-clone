@@ -387,7 +387,7 @@ def linkProfile(request, username):
     profile_user = User.objects.get(username=username)
     user_id = int(profile_user.id) if profile_user else None
     user_session = request.user
-    follow = Follow.objects.get(following=profile_user.id)
+    follow = Follow.objects.filter(following=profile_user.id)
     posts = Post.objects.filter(author=profile_user)
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
@@ -476,3 +476,25 @@ def followUser(request, user_id):
         follower = user
     )
     return redirect('link-profile', username=following.username)
+
+def listFollowers(request, username):
+    profile_user = User.objects.get(username=username)
+    followers = Follow.objects.filter(following=profile_user.id)
+    
+    context = {
+        'profile_user': profile_user,
+        'followers': followers
+    }
+    
+    return render(request, 'base/followers.html', context)
+
+def listFollowing(request, username):
+    following = Follow.objects.filter(following=username)
+    profile_user = User.objects.get(username=username)
+    
+    context = {
+        'profile_user': profile_user,
+        'following': following
+    }
+    
+    return render(request, 'base/following.html', context)

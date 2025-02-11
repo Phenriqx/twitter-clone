@@ -565,3 +565,58 @@ textarea {
 .update_profile_button:hover {
     background-color: #0d8ae3;
 }
+
+.profile__navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 10px 0;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.profile__nav-item {
+    margin: 0 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1da1f2;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 20px;
+    transition: background 0.3s;
+}
+
+.profile__nav-item:hover {
+    background-color: rgba(29, 161, 242, 0.1);
+}
+
+.followers__container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.follower {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.follower:last-child {
+    border-bottom: none;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.name {
+    font-size: 16px;
+    font-weight: bold;
+}
