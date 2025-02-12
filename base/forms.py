@@ -62,4 +62,4 @@ class UserForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ['name', 'username', 'bio']
+        fields = ['name', 'username', 'bio', 'image']

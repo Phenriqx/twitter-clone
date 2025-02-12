@@ -7,7 +7,11 @@
         <!DOCTYPE html>
         <div class="profile-container">
             <div class="cover"></div>
-            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="" class='profile-pic'>
+            {% if profile_user.image %}
+                <img src="{{ profile_user.image.url }}" alt="User photo" class="profile-pic">
+            {% else %}
+                <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="profile-pic">
+            {% endif %}
             <div class="profile-info">
                 <h2> {{ profile_user.name }} </h2>
                 <p>@{{ profile_user.username }} </p>
@@ -37,7 +41,11 @@
                 <a href="{% url 'get-post' comment.author comment.id %}" class="postLink">
                     <div class="post">
                         <div class="post__avatar">
-                            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                            {% if comment.author.image %}
+                                <img src="{{ comment.author.image.url }}" alt="User photo" class="user__image">
+                            {% else %}
+                                <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                            {% endif %}
                         </div>
                         <div class="post__body">
                             <div class="post__header">
@@ -76,7 +84,11 @@
                 <a href="{% url 'get-post' like.author like.post.id %}" class="postLink">
                     <div class="post">
                         <div class="post__avatar">
-                            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                            {% if like.post.author.image %}
+                                <img src="{{ like.post.author.image.url }}" alt="User photo" class="user__image">
+                            {% else %}
+                                <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                            {% endif %}
                         </div>
                         <div class="post__body">
                             <div class="post__header">
@@ -102,7 +114,11 @@
         <a href="{% url 'get-post' post.author post.id %}" class="postLink">
             <div class="post">
                 <div class="post__avatar">
-                    <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                    {% if post.author.image %}
+                        <img src="{{ post.author.image.url }}" alt="User photo" class="user__image">
+                    {% else %}
+                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                    {% endif %}
                 </div>
                 <div class="post__body">
                     <div class="post__header">

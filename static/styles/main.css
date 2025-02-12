@@ -125,8 +125,7 @@ body {
 }
 
 /* Post box */
-
-.postbox__input img {
+.default__image {
     border-radius: 50%;
     height: 40px;
 }
@@ -567,57 +566,38 @@ textarea {
     background-color: #0d8ae3;
 }
 
-.profile__navbar {
+.follow__topics {
     display: flex;
-    justify-content: center;
-    background-color: #ffffff;
-    padding: 10px 0;
-    border-bottom: 1px solid #e1e8ed;
+    justify-content: space-around;
+    margin-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--twitter-background);
 }
 
-.profile__nav-item {
-    margin: 0 15px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #1da1f2;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 20px;
-    transition: background 0.3s;
+.follow__topics a {
+    text-decoration: none;
+    color: #000
 }
 
-.profile__nav-item:hover {
-    background-color: rgba(29, 161, 242, 0.1);
+.follow__topics a:hover {
+    text-decoration: underline;
+    color: var(--twitter-color);
 }
 
-.followers__container {
-    max-width: 600px;
-    margin: 20px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.follow__item {
+    height: fit-content;
 }
 
-.follower {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #e1e8ed;
-}
-
-.follower:last-child {
-    border-bottom: none;
-}
-
-.avatar {
-    width: 40px;
-    height: 40px;
+.follow_img {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 25px;
+    margin-bottom: 10px;
 }
 
-.name {
-    font-size: 16px;
-    font-weight: bold;
+.user__image {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
 }

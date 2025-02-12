@@ -80,8 +80,6 @@
             <form action="add-post" method="post">
                 {% csrf_token %}
                 <div class="postbox__input">
-                    {% comment %} {{ form.as_p }} {% endcomment %}
-                    {% comment %} <img src="" alt=""> {% endcomment %}
                     <input type="text" placeholder="What's happening?" class="input__Text" name="content" autocomplete="off">
                 </div>
                 <button class="postBox__postButton">Post</button>
@@ -93,7 +91,11 @@
             <a href="{% url 'get-post' post.author post.id %}" class="postLink">
                 <div class="post">
                     <div class="post__avatar">
-                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                        {% if post.author.image %}
+                            <img src="{{ post.author.image.url }}" alt="User photo" class="user__image">
+                        {% else %}
+                            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                        {% endif %}
                     </div>
                     <div class="post__body">
                         <div class="post__header">
