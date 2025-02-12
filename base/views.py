@@ -73,14 +73,23 @@ def home(request):
 def search(request):
     q = request.GET.get('q')
     
-    results = Post.objects.filter(
+    posts = Post.objects.filter(
             Q(author__username__icontains=q) |
             Q(content__icontains=q) |
             Q(author__name__icontains=q) |
             Q(author__email__icontains=q)
     )
+    
+    users = User.objects.filter(
+        Q(username__icontains=q) |
+        Q(name__icontains=q) |
+        Q(email__icontains=q)
+    )
 
-    context =  {'results': results}
+    context =  {
+        'posts': posts,
+        'users': users,
+    }
     return render(request, 'base/results.html', context)
 
 @login_required(login_url='login')

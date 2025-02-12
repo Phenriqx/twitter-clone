@@ -16,7 +16,7 @@
                 <h2> {{ profile_user.name }} </h2>
                 <p>@{{ profile_user.username }} </p>
                 <p>{{ profile_user.bio }}</p>
-                <a href="{% url "followers" profile_user.username %}">
+                <a href="{% url "followers" profile_user.username %}" class="follower_count">
                     <p>{{ follow.count }} Followers</p>
                 </a>
             </div>

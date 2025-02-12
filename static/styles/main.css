@@ -587,6 +587,15 @@ textarea {
     height: fit-content;
 }
 
+.follower_count {
+    text-decoration: none;
+}
+
+.follower_count:hover {
+    text-decoration: underline;
+    color: var(--twitter-color);
+}
+
 .follow_img {
     width: 30px;
     height: 30px;
@@ -599,4 +608,10 @@ textarea {
     border-radius: 50%;
     height: 40px;
     width: 40px;
+}
+
+.profile__nofollow {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
 }
