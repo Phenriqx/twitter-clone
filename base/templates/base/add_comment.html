@@ -9,7 +9,11 @@
 
     <div class="post">
         <div class="post__avatar">
-            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+            {% if author.image %}
+                <img src="{{ author.image.url }}" alt="User photo" class="user__image">
+            {% else %}
+                <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+            {% endif %}
         </div>
     
         <div class="post__body">
@@ -53,13 +57,17 @@
         {% if comment.post.id == post.id %}
             <div class="post">
                 <div class="post__avatar">
-                    <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                    {% if comment.author.image %}
+                        <img src="{{ comment.author.image.url }}" alt="User photo" class="user__image">
+                    {% else %}
+                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                    {% endif %}
                 </div>
             
                 <div class="post__body">
                     <div class="post__header">
                         <div class="post__headerText">
-                            <h3>{{ comment.author }}
+                            <h3>{{ comment.author.name }}
                                 <span class="post__headerSpecial">
                                     <span class="material-symbols-outlined post__badge">verified</span>@{{ comment.author.username }} - {{ comment.created|timesince }}
                                 </span>

@@ -9,7 +9,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     bio = models.TextField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    #media = models.ImageField()
+    image = models.ImageField(null=True, blank=True, upload_to='images/')
     
     class Meta:
         abstract = False
@@ -27,7 +27,6 @@ class Post(models.Model):
     content = models.CharField(max_length=300)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    #media 
     
     class Meta:
         ordering = ['-updated', '-created']

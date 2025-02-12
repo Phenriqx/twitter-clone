@@ -321,9 +321,6 @@ def deleteList(request, pk):
     }
     return render(request, 'base/delete_list.html', context)
 
-def getLikeAmount(post):
-    return Like.objects.filter(post=post).count()
-
 @login_required(login_url='login')
 def likePost(request, pk):
     user = request.user
@@ -411,8 +408,8 @@ def loadReplies(request, username):
     
     page = 'replies'
     user_session = request.user
-    profile_user = User.objects.get(username=username)
-    follow = Follow.objects.get(following=profile_user.id)
+    profile_user = User.objects.get(username=username) 
+    follow = Follow.objects.get(following=profile_user.id) if Follow.objects.filter(following=profile_user.id) else None
     user_id = int(profile_user.id) if profile_user else None
     comments = Comment.objects.filter(author=profile_user)
     
@@ -432,7 +429,7 @@ def loadLikes(request, username):
     user_session = request.user
     page = 'likes'
     profile_user = User.objects.get(username=username)
-    follow = Follow.objects.get(following=profile_user.id)
+    follow = Follow.objects.get(following=profile_user.id) if Follow.objects.filter(following=profile_user.id) else None
     user_id = int(profile_user.id) if profile_user else None
     likes = Like.objects.filter(author=profile_user)
     
@@ -451,7 +448,7 @@ def udpateProfile(request, username):
     form = UserForm(instance=request.user)
     
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=request.user)
+        form = UserForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated succesfully')

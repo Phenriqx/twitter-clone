@@ -10,8 +10,12 @@
 
         {% for follower in followers %}
             <div class="post follow__item">
-                <div class="post__avatar follow_img">
-                    <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                <div class="post__avatar">
+                    {% if follower.follower.image %}
+                        <img src="{{ follower.follower.image.url }}" alt="User photo" class="user__image">
+                    {% else %}
+                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                    {% endif %}
                 </div>
                 <div class="post__body">
                     <div class="post__header">
