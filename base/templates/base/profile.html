@@ -24,8 +24,11 @@
                 {% if user == profile_user %}
                     <a href="{% url 'update-profile' profile_user.username %}"><button>Edit Profile</button></a>
                 {% else %}
-
-                    <a href="{% url 'follow' profile_user.id %}"><button>Follow</button></a>
+                    {% if is_following == True %}
+                        <a href="{% url 'unfollow' profile_user.id %}"><button>Unfollow</button></a>
+                    {% else %}  
+                        <a href="{% url 'follow' profile_user.id %}"><button>Follow</button></a>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="tabs">
