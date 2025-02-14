@@ -377,6 +377,8 @@ def profile(request, user):
     
     if Follow.objects.filter(following=user_id, follower=request.user.id).exists():
         is_following = True
+    elif not Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = False
     
     context = {
         'user': user,
@@ -430,12 +432,14 @@ def loadReplies(request, username):
     page = 'replies'
     user_session = request.user
     profile_user = User.objects.get(username=username) 
-    follow = Follow.objects.get(following=profile_user.id) if Follow.objects.filter(following=profile_user.id) else None
+    follow = Follow.objects.filter(following=profile_user.id) 
     user_id = int(profile_user.id) if profile_user else None
     comments = Comment.objects.filter(author=profile_user)
     
     if Follow.objects.filter(following=user_id, follower=request.user.id).exists():
         is_following = True
+    elif not Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = False
     
     context = {
         'comments' : comments,
@@ -461,6 +465,8 @@ def loadLikes(request, username):
     
     if Follow.objects.filter(following=user_id, follower=request.user.id).exists():
         is_following = True
+    elif not Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = False
     
     context = {
         'likes' : likes, 
@@ -519,6 +525,8 @@ def listFollowers(request, username):
     profile_user = User.objects.get(username=username)
     followers = Follow.objects.filter(following=profile_user.id)
     
+    print(followers)
+    
     context = {
         'profile_user': profile_user,
         'followers': followers
@@ -528,8 +536,10 @@ def listFollowers(request, username):
 
 @login_required(login_url='login')
 def listFollowing(request, username):
-    following = Follow.objects.filter(following=username)
     profile_user = User.objects.get(username=username)
+    following = Follow.objects.filter(follower=profile_user.id)
+    
+    print(following)
     
     context = {
         'profile_user': profile_user,

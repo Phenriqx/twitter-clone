@@ -9,7 +9,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     bio = models.TextField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(null=True, blank=True, upload_to='images/')
+    image = models.ImageField(null=True, blank=True, upload_to='images/', default='default.jpg')
     
     class Meta:
         abstract = False

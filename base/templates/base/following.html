@@ -1,0 +1,49 @@
+{% extends "home.html" %}
+{% block title %}People {{ profile_user.username }} follow{% endblock %}
+
+{% block content %}
+    <div class="feed">
+        <div class="follow__topics">
+            <a href="{% url "followers" profile_user.username %}"><h3>Followers</h3></a>
+            <a href="{% url "following" profile_user.username %}"><h3>Following</h3></a>
+        </div>
+
+        {% if following %}
+            {% for follow in following %}
+                <div class="post follow__item">
+                    <div class="post__avatar">
+                        {% if follow.following.image %}
+                            <img src="{{ follow.following.image.url }}" alt="User photo" class="user__image">
+                        {% else %}
+                            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                        {% endif %}
+                    </div>
+                    <div class="post__body">
+                        <div class="post__header">
+                            <div class="post__headerText">
+                                <h3><a href="" class="link__Profile">{{ follow.following.name }}</a>
+                                    <span class="post__headerSpecial">
+                                        <span class="material-symbols-outlined post__badge">verified</span>@{{ follow.following.username }}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="post__headerDescription">
+                                <p>{{ follow.following.bio }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="profile__nofollow">
+                <p>You don't follow anyone yet.</p>
+            </div>
+        {% endif %}
+
+        {% comment %} {% if not following %}
+            <p>No one is following {{ profile_user.username }} yet.</p>
+        {% endif %} {% endcomment %}
+    </div>
+{% endblock %}
+
+    
