@@ -16,8 +16,7 @@
 <h2>🕷 To-do Project list</h2>
 
 - [ ] Rest API with Django
-- [ ] Implement an Artificial Inteligence similar to Grok using the CHAT GPT API
-- [ ] Message System
+- [ ] Message System (soon)
 
 
 
