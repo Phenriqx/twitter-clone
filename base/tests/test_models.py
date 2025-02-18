@@ -2,9 +2,10 @@ from django.test import TestCase
 from base.models import *
 
 class TestPostModel(TestCase):
-    def setUp(self):
-        user = User.objects.create(username='testuser')
-        self.post = Post(id=1, author=user, content='Hello world!')
+    @classmethod
+    def setUp(cls):
+        cls.user = User.objects.create(username='testuser')
+        cls.post = Post(id=1, author=cls.user, content='Hello world!')
     
     def test_string_representation(self):
         self.assertEqual(str(self.post), '1 - testuser: Hello world!')
@@ -15,11 +16,11 @@ class TestPostModel(TestCase):
         self.assertEqual(self.post.content, 'Hello world!')
         
     def test_post_content_is_not_none(self):
-        self.post.content = ''
+        post = Post.objects.create(id=1, author=self.user, content='')
         with self.assertRaises(ValidationError):
-            self.post.validate_post()
+            post.validate_post()
             
     def test_post_content_is_not_above_max_length(self):
-        self.post.content = 'a' * 257
+        post = Post.objects.create(id=1, author=self.user, content='a' * 257)
         with self.assertRaises(ValidationError):
-            self.post.validate_post()
+            post.validate_post()

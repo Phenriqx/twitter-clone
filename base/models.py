@@ -14,7 +14,7 @@ class User(AbstractUser):
     
     def validate_user(self):
         if len(self.username) == 0 or len(self.username) > 64:
-            raise ValidationError('The username must be between 3 and 64 characters long.')
+            raise ValidationError('The username must be between 1 and 64 characters long.')
         if not self.username.isalnum():
             raise ValidationError('The username can only contain alphanumeric characters.')
         return self.username
