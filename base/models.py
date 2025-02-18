@@ -1,38 +1,64 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 
 
 class User(AbstractUser):
     
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(unique=True)
     bio = models.TextField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(null=True, blank=True, upload_to='images/', default='default.jpg')
     
-    class Meta:
-        abstract = False
-
+    def validate_user(self):
+        if len(self.username) == 0 or len(self.username) > 64:
+            raise ValidationError('The username must be between 3 and 64 characters long.')
+        if not self.username.isalnum():
+            raise ValidationError('The username can only contain alphanumeric characters.')
+        return self.username
+    
     def __str__(self):
         return self.name
+    
+    class Meta:
+        abstract = False
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     
-    
 class Post(models.Model):
     
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField(max_length=300)
+    content = models.CharField(max_length=256)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    class Meta:
-        ordering = ['-updated', '-created']
+    def validate_post(self):
+        if len(self.content) > 256:
+            raise ValidationError('The post content cannot exceed 256 characters.')
+        if not self.content.strip():
+            raise ValidationError('The post content cannot be empty.')
+        return self.content
+    
+    @property
+    def get_likes(self) -> int:
+        return Like.objects.filter(post=self).count()
+    
+    @property
+    def get_reposts(self) -> int:
+        return Repost.objects.filter(post=self).count()
+    
+    @property
+    def get_comments(self):
+        return Comment.objects.filter(post=self)
         
     def __str__(self):
-        return f'{self.id} - {self.author}: {self.content[:50] if len(self.content) > 50 else self.content}'
+        return f'{self.id} - {self.author.username}: {self.content[:50] if len(self.content) > 50 else self.content}'
+    
+    class Meta:
+        ordering = ['-updated', '-created']
     
 
 class Repost(models.Model):
@@ -89,7 +115,14 @@ class Bookmark(models.Model):
                 
 
 class Topic(models.Model):
-    topic = models.CharField(max_length=80, blank=False)
+    topic = models.CharField(max_length=64, blank=False)
+    
+    def validate_topic(self):
+        if len(self.topic) > 80:
+            raise ValidationError('The topic name cannot exceed 80 characters.')
+        if not self.topic.strip():
+            raise ValidationError('The topic name cannot be empty.')
+        return self.topic.strip()
     
     def __str__(self):
         return self.topic     
@@ -103,6 +136,13 @@ class List(models.Model):
     participants = models.ManyToManyField(User, related_name="participants", blank=True)
     created = models.DateTimeField(auto_now_add=True)
     
+    def validate_list(self):
+        if len(self.name) > 100:
+            raise ValidationError('The list name cannot exceed 100 characters.')
+        if not self.name.strip():
+            raise ValidationError('The list name cannot be empty.')
+        return self.name.strip()
+    
     class Meta:
         ordering = ['-created']
     
@@ -114,8 +154,15 @@ class Message(models.Model):
     
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     list = models.ForeignKey(List, on_delete=models.CASCADE)
-    content = models.CharField(max_length=250)
+    content = models.CharField(max_length=256)
     created = models.DateTimeField(auto_now_add=True)
+    
+    def validate_message(self):
+        if len(self.content) > 256:
+            raise ValidationError('The message content cannot exceed 250 characters.')
+        if not self.content.strip():
+            raise ValidationError('The message content cannot be empty.')
+        return self.content.strip()
     
     class Meta:
         ordering = ['-created']

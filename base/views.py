@@ -96,15 +96,13 @@ def search(request):
 def getPost(request, author, pk):
     user = request.user
     post = Post.objects.get(id=pk)
-    like = Like.objects.filter(post=post, author=user)
-    like_count = Like.objects.filter(post=post).count()
-    repost_count = Repost.objects.filter(post=post).count()
+    like_count = post.get_likes
+    repost_count = post.get_reposts
     comments = Comment.objects.filter(post=post)
 
     context = {
         'post': post,
         'like_count': like_count,
-        'like': like,
         'user': user,
         'comments': comments,
         'repost_count': repost_count
@@ -199,7 +197,7 @@ def addComment(request, author, pk):
     user = request.user
     post = Post.objects.get(id=pk)
     author = post.author.name
-    comments = Comment.objects.all()
+    comments = post.get_comments
     
     if request.method == 'POST':
         form = CommentForm(request.POST)
