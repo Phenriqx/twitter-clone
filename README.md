@@ -13,6 +13,15 @@
   <li>Real time messages (not implemented yet).</li>
 </ul>
 
+<h2>🕷 To-do Project list</h2>
+
+- [ ] Rest API with Django
+- [ ] Implement an Artificial Inteligence similar to Grok using the CHAT GPT API
+- [ ] Message System
+
+
+
+
 <h2>👾 About the project:</h2>
 <p>I started learning Django a few weeks ago and decided to make a project to test and improve my skills with this module.</p>
 <p>The project isn't completed yet, as I plan to add more features to it as soon as I start learning JavaScript and PostgreSQL. So new features will be added to this project in the future.</p>

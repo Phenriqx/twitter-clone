@@ -39,6 +39,7 @@ urlpatterns = [
     path('load-likes/<str:username>/', views.loadLikes, name='load-likes'),
     
     path('follow/<str:user_id>', views.followUser, name='follow'),
+    path('unfollow/<str:user_id>', views.unfollowUser, name='unfollow'),
     path('<str:username>/followers', views.listFollowers, name='followers'),
     path('<str:username>/following', views.listFollowing, name='following')
 ] 

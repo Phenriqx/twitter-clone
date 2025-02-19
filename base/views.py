@@ -73,14 +73,23 @@ def home(request):
 def search(request):
     q = request.GET.get('q')
     
-    results = Post.objects.filter(
+    posts = Post.objects.filter(
             Q(author__username__icontains=q) |
             Q(content__icontains=q) |
             Q(author__name__icontains=q) |
             Q(author__email__icontains=q)
     )
+    
+    users = User.objects.filter(
+        Q(username__icontains=q) |
+        Q(name__icontains=q) |
+        Q(email__icontains=q)
+    )
 
-    context =  {'results': results}
+    context =  {
+        'posts': posts,
+        'users': users,
+    }
     return render(request, 'base/results.html', context)
 
 @login_required(login_url='login')
@@ -366,6 +375,9 @@ def profile(request, user):
     reposts = Repost.objects.filter(author=profile_user)
     comments = Comment.objects.filter(author=profile_user)
     
+    if Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = True
+    
     context = {
         'user': user,
         'profile_user': profile_user,
@@ -374,11 +386,13 @@ def profile(request, user):
         'reposts': reposts,
         'user_id': user_id,
         'comments': comments,
-        'user' : user_session
+        'user' : user_session,
+        'is_following': is_following
     }
     
     return render(request, 'base/profile.html', context)
 
+@login_required(login_url='login')
 def linkProfile(request, username):
     
     profile_user = User.objects.get(username=username)
@@ -389,6 +403,11 @@ def linkProfile(request, username):
     likes = Like.objects.filter(author=profile_user)
     reposts = Repost.objects.filter(author=profile_user)
     
+    if Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = True
+    elif not Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = False
+    
     context = {
         'profile_user': profile_user,
         'posts': posts,
@@ -397,10 +416,12 @@ def linkProfile(request, username):
         'user_id': user_id,
         'user' : user_session,
         'follow': follow,
+        'is_following': is_following
     }
     
     return render(request, 'base/profile.html', context)
 
+@login_required(login_url='login')
 def loadReplies(request, username):
     
     if not User.objects.filter(username=username).exists():
@@ -413,6 +434,9 @@ def loadReplies(request, username):
     user_id = int(profile_user.id) if profile_user else None
     comments = Comment.objects.filter(author=profile_user)
     
+    if Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = True
+    
     context = {
         'comments' : comments,
         'page': page,
@@ -420,18 +444,23 @@ def loadReplies(request, username):
         'profile_user': profile_user,
         'user' : user_session,
         'follow': follow,
+        'is_following': is_following
     }
     
     return render(request, 'base/profile.html', context)
 
+@login_required(login_url='login')
 def loadLikes(request, username):
     
     user_session = request.user
     page = 'likes'
     profile_user = User.objects.get(username=username)
-    follow = Follow.objects.get(following=profile_user.id) if Follow.objects.filter(following=profile_user.id) else None
+    follow = Follow.objects.filter(following=profile_user.id)    
     user_id = int(profile_user.id) if profile_user else None
     likes = Like.objects.filter(author=profile_user)
+    
+    if Follow.objects.filter(following=user_id, follower=request.user.id).exists():
+        is_following = True
     
     context = {
         'likes' : likes, 
@@ -440,10 +469,12 @@ def loadLikes(request, username):
         'profile_user': profile_user,
         'user' : user_session,
         'follow': follow,
+        'is_following': is_following
     }
     
     return render(request, 'base/profile.html', context)
 
+@login_required(login_url='login')
 def udpateProfile(request, username):
     form = UserForm(instance=request.user)
     
@@ -460,6 +491,7 @@ def udpateProfile(request, username):
     }
     return render(request, 'base/update_profile.html', context)
 
+@login_required(login_url='login')
 def followUser(request, user_id):
     user = request.user
     
@@ -474,6 +506,15 @@ def followUser(request, user_id):
     )
     return redirect('link-profile', username=following.username)
 
+@login_required(login_url='login')
+def unfollowUser(request, user_id):
+    user = request.user
+    following = User.objects.get(id=user_id)
+    
+    Follow.objects.filter(following=user_id, follower=user.id).delete()
+    return redirect('link-profile', username=following.username)
+
+@login_required(login_url='login')
 def listFollowers(request, username):
     profile_user = User.objects.get(username=username)
     followers = Follow.objects.filter(following=profile_user.id)
@@ -485,6 +526,7 @@ def listFollowers(request, username):
     
     return render(request, 'base/followers.html', context)
 
+@login_required(login_url='login')
 def listFollowing(request, username):
     following = Follow.objects.filter(following=username)
     profile_user = User.objects.get(username=username)

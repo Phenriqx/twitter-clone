@@ -8,31 +8,37 @@
             <a href="{% url "following" profile_user.username %}"><h3>Following</h3></a>
         </div>
 
-        {% for follower in followers %}
-            <div class="post follow__item">
-                <div class="post__avatar">
-                    {% if follower.follower.image %}
-                        <img src="{{ follower.follower.image.url }}" alt="User photo" class="user__image">
-                    {% else %}
-                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
-                    {% endif %}
-                </div>
-                <div class="post__body">
-                    <div class="post__header">
-                        <div class="post__headerText">
-                            <h3><a href="{% url "link-profile" follower.follower.username %}" class="link__Profile">{{ follower.follower.name }}</a>
-                                <span class="post__headerSpecial">
-                                    <span class="material-symbols-outlined post__badge">verified</span>@{{ follower.follower.username }}
-                                </span>
-                            </h3>
-                        </div>
-                        <div class="post__headerDescription">
-                            <p>{{ follower.follower.bio }}</p>
+        {% if followers %}
+            {% for follower in followers %}
+                <div class="post follow__item">
+                    <div class="post__avatar">
+                        {% if follower.follower.image %}
+                            <img src="{{ follower.follower.image.url }}" alt="User photo" class="user__image">
+                        {% else %}
+                            <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                        {% endif %}
+                    </div>
+                    <div class="post__body">
+                        <div class="post__header">
+                            <div class="post__headerText">
+                                <h3><a href="{% url "link-profile" follower.follower.username %}" class="link__Profile">{{ follower.follower.name }}</a>
+                                    <span class="post__headerSpecial">
+                                        <span class="material-symbols-outlined post__badge">verified</span>@{{ follower.follower.username }}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="post__headerDescription">
+                                <p>{{ follower.follower.bio }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+            {% endfor %}
+        {% else %}
+            <div class="profile__nofollow">
+                <p>No followers found for {{ profile_user.username }}.</p>
             </div>
-        {% endfor %}
+        {% endif %}
 
         {% comment %} {% if not following %}
             <p>No one is following {{ profile_user.username }} yet.</p>

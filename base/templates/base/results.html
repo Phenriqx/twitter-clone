@@ -7,36 +7,68 @@
     <div class="feed__header">
         <h2>Search Results</h2>
     </div>
-    
 
-    {% for result in results %}
-        <a href="{% url 'get-post' result.author result.id %}" class="postLink">
-            <div class="post">
+    
+    {% if users %}
+        {% for user in users %}
+            <div class="post follow__item">
                 <div class="post__avatar">
-                    <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
+                    {% if user.image %}
+                        <img src="{{ user.image.url }}" alt="User photo" class="user__image">
+                    {% else %}
+                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                    {% endif %}
                 </div>
                 <div class="post__body">
                     <div class="post__header">
                         <div class="post__headerText">
-                            <h3>{{ result.author}}
+                            <h3><a href="{% url "link-profile" user.username %}" class="link__Profile">{{ user.name }} (Profile) </a>
                                 <span class="post__headerSpecial">
-                                    <span class="material-symbols-outlined post__badge">verified</span>@{{ result.author.username }} - {{ result.created|timesince }}
+                                    <span class="material-symbols-outlined post__badge">verified</span>@{{ user.username }}
                                 </span>
                             </h3>
                         </div>
                         <div class="post__headerDescription">
-                            <p>{{ result.content }}</p>
+                            <p>{{ user.bio }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% for post in posts %}
+        <a href="{% url 'get-post' post.author post.id %}" class="postLink">
+            <div class="post">
+                <div class="post__avatar">
+                    {% if post.author.image %}
+                        <img src="{{ post.author.image.url }}" alt="User photo" class="user__image">
+                    {% else %}
+                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                    {% endif %}
+                </div>
+                <div class="post__body">
+                    <div class="post__header">
+                        <div class="post__headerText">
+                            <h3>{{ post.author}} (Post)
+                                <span class="post__headerSpecial">
+                                    <span class="material-symbols-outlined post__badge">verified</span>@{{ post.author.username }} - {{ post.created|timesince }}
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="post__headerDescription">
+                            <p>{{ post.content }}</p>
                         </div>
                     </div>
                     {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
                     <div class="post__footer">
-                        <a href="{% url "like-post" result.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a>
-                        <a href="{% url "repost" result.id %}"><span class="material-symbols-outlined repostButton">repeat</span></a>
-                        <a href="{% url "add-comment" result.author result.id%}"><span class="material-symbols-outlined chatButton">chat</span></a>
-                        <a href="{% url "add-bookmark" result.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
-                        {% if request.user == result.author %}
-                            <a href="{% url "delete-post" result.id %}"><span class="material-symbols-outlined deleteButton">delete</span></a>
-                            <a href="{% url "update-post" result.id%}"><span class="material-symbols-outlined updateButton">update</span></a>
+                        <a href="{% url "like-post" post.id %}"><span class="material-symbols-outlined likeButton">favorite</span> {{ like_count }}</a>
+                        <a href="{% url "repost" post.id %}"><span class="material-symbols-outlined repostButton">repeat</span></a>
+                        <a href="{% url "add-comment" post.author post.id%}"><span class="material-symbols-outlined chatButton">chat</span></a>
+                        <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
+                        {% if request.user == post.author %}
+                            <a href="{% url "delete-post" post.id %}"><span class="material-symbols-outlined deleteButton">delete</span></a>
+                            <a href="{% url "update-post" post.id%}"><span class="material-symbols-outlined updateButton">update</span></a>
                         {% endif %}
                     </div>
                 </div>
