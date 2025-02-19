@@ -54,46 +54,45 @@
         </div>
     </form>
     {% for comment in comments %}
-        {% if comment.post.id == post.id %}
-            <div class="post">
-                <div class="post__avatar">
-                    {% if comment.author.image %}
-                        <img src="{{ comment.author.image.url }}" alt="User photo" class="user__image">
-                    {% else %}
-                        <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+        
+        <div class="post">
+            <div class="post__avatar">
+                {% if comment.author.image %}
+                    <img src="{{ comment.author.image.url }}" alt="User photo" class="user__image">
+                {% else %}
+                    <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="default user image" class="default__image">
+                {% endif %}
+            </div>
+        
+            <div class="post__body">
+                <div class="post__header">
+                    <div class="post__headerText">
+                        <h3>{{ comment.author.name }}
+                            <span class="post__headerSpecial">
+                                <span class="material-symbols-outlined post__badge">verified</span>@{{ comment.author.username }} - {{ comment.created|timesince }}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="post__headerDescription">
+                        <p>{{ comment.content }}</p>
+                    </div>
+                </div>
+        
+                {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
+                <div class="post__footer">
+
+                    <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
+                    <a href=""><span class="material-symbols-outlined repostButton">repeat</span></a>
+                    <a href="{% url "add-comment" comment.author comment.id %}"><span class="material-symbols-outlined chatButton">chat</span></a>
+                    <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
+        
+                    {% if request.user == comment.author %}
+                        <a href="{% url "delete-comment" comment.author comment.id %}"><span class="material-symbols-outlined deleteButton">delete</span></a>
+                        <a href="{% url "update-comment" comment.author comment.id %}"><span class="material-symbols-outlined deleteButton">update</span></a>
                     {% endif %}
                 </div>
-            
-                <div class="post__body">
-                    <div class="post__header">
-                        <div class="post__headerText">
-                            <h3>{{ comment.author.name }}
-                                <span class="post__headerSpecial">
-                                    <span class="material-symbols-outlined post__badge">verified</span>@{{ comment.author.username }} - {{ comment.created|timesince }}
-                                </span>
-                            </h3>
-                        </div>
-                        <div class="post__headerDescription">
-                            <p>{{ comment.content }}</p>
-                        </div>
-                    </div>
-            
-                    {% comment %} <img src="https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg" alt=""> {% endcomment %}
-                    <div class="post__footer">
-
-                        <a href="{% url 'home' %}"><span class="material-symbols-outlined likeButton">favorite</span></a>
-                        <a href=""><span class="material-symbols-outlined repostButton">repeat</span></a>
-                        <a href="{% url "add-comment" comment.author comment.id %}"><span class="material-symbols-outlined chatButton">chat</span></a>
-                        <a href="{% url "add-bookmark" post.id %}"><span class="material-symbols-outlined bookmark">bookmark</span></a>
-            
-                        {% if request.user == comment.author %}
-                            <a href="{% url "delete-comment" comment.author comment.id %}"><span class="material-symbols-outlined deleteButton">delete</span></a>
-                            <a href="{% url "update-comment" comment.author comment.id %}"><span class="material-symbols-outlined deleteButton">update</span></a>
-                        {% endif %}
-                    </div>
-                </div>
             </div>
-        {% endif %}
+        </div>
     {% endfor %}
 </div>
 {% endblock %}
