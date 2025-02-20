@@ -3,9 +3,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.core.mail import send_mail, EmailMessage
 from .models import Post, User, Repost, Like, Comment, Bookmark, List, Topic, Message, Follow
 from .forms import CustomUserCreationForm, PostForm, CommentForm, ListForm, UserForm
+from core import settings
 
 
 def loginUser(request):
@@ -23,6 +24,14 @@ def loginUser(request):
             return redirect('register')
         
         user = authenticate(request, email=email, password=password)
+        message = 'Welcome to Twitter Clone. Enjoy!'
+        send_mail(
+            f'Welcome {user.username}!',
+            message,
+            'settings.EMAIL_HOST_USER',
+            [email],
+            fail_silently=False,
+        )
         
         if user is not None:
             login(request, user)
